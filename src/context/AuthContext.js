@@ -1,8 +1,6 @@
-import { createContext, useState, useEffect } from 'react'
+import { createContext, useState } from 'react'
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom'
-import Cookies from 'js-cookie';
-import axios from 'axios'
 
 const AuthContext = createContext()
 

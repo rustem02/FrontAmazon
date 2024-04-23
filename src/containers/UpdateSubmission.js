@@ -36,7 +36,7 @@ export default function UpdateSubmission() {
     };
 
     fetchData(); // Вызов функции для выполнения запроса при загрузке компонента
-}, []);
+}, [authTokens]);
 
   const fetchData = async () => {
       const formData = new FormData();

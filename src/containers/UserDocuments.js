@@ -45,7 +45,7 @@ export default function UserDocuments() {
 
     const verifyUser = async () => {
         try {
-            const response = await axios.put(`documents/verify/?email=${email}`, {
+             await axios.put(`documents/verify/?email=${email}`, {
                 is_verified: true
             }, {
                 headers: {
@@ -62,7 +62,7 @@ export default function UserDocuments() {
 
     const cancelVerifyUser = async () => {
         try {
-            const response = axios.put(`documents/verify/?email=${email}`, {
+            axios.put(`documents/verify/?email=${email}`, {
                 is_verified: false
             }, {
                 headers: {
