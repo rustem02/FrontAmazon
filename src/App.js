@@ -1,7 +1,7 @@
-import axios from "axios";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import PrivateRoute from "./utils/PrivateRoute";
+import AdminRoute from "./utils/AdminRoute";
 
 import MainPage from "./containers/MainPage";
 import Login from "./containers/Login";
@@ -25,8 +25,10 @@ import Rooms from "./containers/Rooms";
 import News from "./containers/News";
 import NewsPublish from "./containers/AdminPages/NewsPublish";
 import AddNews from "./containers/AdminPages/AddNews";
+import AdminDashboard from "./containers/AdminPages/AdminDashboard";
 import CongratsPublished from "./containers/ResponsePages/CongratsPublished";
 import AboutUs from "./containers/AboutUs";
+import SupportChat from "./containers/SupportChat";
 
 const App = () => {
   return (
@@ -35,24 +37,26 @@ const App = () => {
             <Routes>
                 <Route exact path="/" element={<Login/>}/>
                 <Route exact path="/register" element={<Register/>}/>
-                <Route exact path="/document-submission" element={<DocumentSubmission/>}/>
-                <Route exact path="/verify-documents" element={<VerifyDocs/>}/>
-                <Route exact path="/detailed-doc/:email" element={<UserDocuments/>}/>
-                <Route exact path="/booking" element={<Booking/>}/>
-                <Route exact path="/confirmation-booking" element={<ConfirmationPage/>}/>
-                <Route exact path="/payment-booking" element={<PaymentBooking/>}/>
+                <Route exact path="/document-submission" element={<PrivateRoute><DocumentSubmission/></PrivateRoute>}/>
+                <Route exact path="/verify-documents" element={<PrivateRoute><AdminRoute><VerifyDocs/></AdminRoute></PrivateRoute>}/>
+                <Route exact path="/detailed-doc/:email" element={<PrivateRoute><AdminRoute><UserDocuments/></AdminRoute></PrivateRoute>}/>
+                <Route exact path="/booking" element={<PrivateRoute><Booking/></PrivateRoute>}/>
+                <Route exact path="/confirmation-booking" element={<PrivateRoute><ConfirmationPage/></PrivateRoute>}/>
+                <Route exact path="/payment-booking" element={<PrivateRoute><PaymentBooking/></PrivateRoute>}/>
                 <Route exact path="/oops" element={<Oops/>}/>
-                <Route exact path="/my-booking" element={<MyBookings/>}/>
+                <Route exact path="/my-booking" element={<PrivateRoute><MyBookings/></PrivateRoute>}/>
                 <Route exact path="/doc-submitted" element={<DocSumbitted/>}/>
-                <Route exact path="/update-submission" element={<UpdateSubmission/>}/>
+                <Route exact path="/update-submission" element={<PrivateRoute><UpdateSubmission/></PrivateRoute>}/>
                 <Route exact path="/congrats-booking" element={<CongratsBooking/>}/>
-                <Route exact path="/profile" element={<ProfilePage/>}/>
+                <Route exact path="/profile" element={<PrivateRoute><ProfilePage/></PrivateRoute>}/>
                 <Route exact path="/rooms" element={<Rooms/>}/>
                 <Route exact path="/news" element={<News/>}/>
-                <Route exact path="/news-admin" element={<NewsPublish/>}/>
-                <Route exact path="/add-news" element={<AddNews/>}/>
+                <Route exact path="/news-admin" element={<PrivateRoute><AdminRoute><NewsPublish/></AdminRoute></PrivateRoute>}/>
+                <Route exact path="/add-news" element={<PrivateRoute><AdminRoute><AddNews/></AdminRoute></PrivateRoute>}/>
+                <Route exact path="/admin-dashboard" element={<PrivateRoute><AdminRoute><AdminDashboard/></AdminRoute></PrivateRoute>}/>
                 <Route exact path="/congrats-published" element={<CongratsPublished/>}/>
                 <Route exact path="/about-us" element={<AboutUs/>}/>
+                <Route exact path="/support-chat" element={<PrivateRoute><SupportChat/></PrivateRoute>}/>
                 <Route
                   path="/main-page"
                   element={

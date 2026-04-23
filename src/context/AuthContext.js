@@ -5,16 +5,26 @@ import { useNavigate } from 'react-router-dom'
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
-    let [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
-    let [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')) : null)
+    let [authTokens, setAuthTokens] = useState(() => localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
+    let [user, setUser] = useState(() => {
+        const storedTokens = localStorage.getItem('authTokens');
+        if (!storedTokens) return null;
+        try {
+            const parsedTokens = JSON.parse(storedTokens);
+            return parsedTokens?.access ? jwtDecode(parsedTokens.access) : null;
+        } catch (err) {
+            return null;
+        }
+    })
     const [errorLogin, setErrorLogin] = useState('')
 
     const navigate = useNavigate();
 
     let loginUser = async (e)=> {
+        const baseApi = process.env.REACT_APP_API_LOGIN_URL || 'http://localhost:8000/api/login/'
         e.preventDefault()
         try{
-            let response = await fetch('http://13.49.18.134/api/login/', {
+            let response = await fetch(baseApi, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'

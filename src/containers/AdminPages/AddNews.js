@@ -25,7 +25,7 @@ export default function AddNews() {
             formData.append('title', title);
             formData.append('content', content);
             formData.append('file', file);
-            const response = await fetch('http://13.49.18.134/news/', {
+            const response = await fetch('http://localhost:8000/news/', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -67,7 +67,7 @@ export default function AddNews() {
                 <form className='add-news-form' onSubmit={submit}>
                     <select id="floor-select" className='add-news-select' value={title} onChange={handleCategoryChange}>
                         <option value="">Selected Category</option>
-                        <option value="SDU Dorm News">SDU Dorm News</option>
+                        <option value="Dorm Hub News">Dorm Hub News</option>
                         <option value="AC Catering News">AC Catering News</option>
                     </select>
                     <div className='add-news-withLabel'>

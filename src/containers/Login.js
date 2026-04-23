@@ -1,13 +1,13 @@
-import axios from 'axios';
 import React from 'react'
-import {useState } from 'react'
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 const Login = ()=> {
 
   let {loginUser, errorLogin, setErrorLogin} = useContext(AuthContext)
+  const { t } = useTranslation();
 
   //Если пользователь авторизовался то кидать на MainPage
   return (
@@ -19,12 +19,12 @@ const Login = ()=> {
                 </div>
                 <div className="form-content">
                     <div className="title-content">
-                        <h2>Sign in</h2>
-                        <p>Welcome back, please sign in to your account.</p>
+                        <h2>{t('login.signIn')}</h2>
+                        <p>{t('login.welcomeBack')}</p>
                     </div>
                     <form onSubmit={loginUser}>
                       <div className="field-component">
-                        <label htmlFor="email">Email</label>
+                        <label htmlFor="email">{t('login.email')}</label>
                         <input 
                         type="email" 
                         id="email"
@@ -37,7 +37,7 @@ const Login = ()=> {
                         />
                       </div>
                       <div className="field-component field-login">
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password">{t('login.password')}</label>
                         <input 
                         type="password" 
                         id="password"
@@ -54,26 +54,26 @@ const Login = ()=> {
                             name="remember" 
                             id="remember" 
                           />
-                         <label>Remember me</label>
+                         <label>{t('login.remember')}</label>
                         </div>
                         <div className="forgot">
-                          <a href="/"><Link to='/reset-password'>Forgot Password?</Link></a>
+                          <a href="/"><Link to='/reset-password'>{t('login.forgotPassword')}</Link></a>
                         </div>
                       </div>
-                      <button className="btn">Sign in</button>
+                      <button className="btn">{t('login.signIn')}</button>
                     </form>
                 </div>
-                <h4>If you don't have an account? <Link to ='/register' onClick={()=>setErrorLogin('')}>Click here</Link></h4>
+                <h4>{t('login.noAccount')} <Link to ='/register' onClick={()=>setErrorLogin('')}>{t('login.clickHere')}</Link></h4>
             </div>
         </div>
         <div className="welcome">
             <div className="welcome-items">
                 <div className="img">
-                    <img src={require('../img/SignInImg.png')} alt={"img"} />
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80" alt={"img"} />
                 </div>
                 <div className="welcome-content">
                     <h2 className="welcome-title">Welcome to Dorm Hub platform!</h2>
-                    <p className="welcome-desc">Dorm Hub platform is an online platform developed in the user friendly interface to make it easier for SDU students to book a seat in a dormitory.</p>
+                    <p className="welcome-desc">Dorm Hub Kazakhstan is a digital platform that helps students from universities across Kazakhstan book dormitory places in a transparent way.</p>
                 </div>
             </div>
         </div>

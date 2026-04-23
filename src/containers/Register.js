@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 export default function Register() {
@@ -19,6 +19,21 @@ export default function Register() {
   const [successfullyRegister, setSuccessfullyRegister] = useState('')
   const [faculty, setSelectedFaculty] = useState("");
   const [specialty, setSelectedSpeciality] = useState("");
+  const [university, setSelectedUniversity] = useState("");
+  const [universities, setUniversities] = useState([]);
+
+  useEffect(() => {
+    const fetchUniversities = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/universities/');
+        const data = await response.json();
+        setUniversities(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error('Cannot fetch universities: ', error);
+      }
+    };
+    fetchUniversities();
+  }, []);
 
   const specialities = [
     {
@@ -174,7 +189,7 @@ export default function Register() {
     
      try{
       const response = await axios.post('register/', {
-        first_name, last_name, id_number, specialty, faculty, birth_date, gender, email, password, password_confirm
+        first_name, last_name, id_number, specialty, faculty, university, birth_date, gender, email, password, password_confirm
       });
 
       // console.log(response.response.data.email);
@@ -233,11 +248,11 @@ console.log("Gender: " + gender);
       <div className="welcome">
           <div className="welcome-items">
               <div className="img">
-                  <img src={require('../img/SignUpImg.png')} alt="img"/>
+                  <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80" alt="img"/>
               </div>
               <div className="welcome-content">
-                  <h2 className="welcome-title">Welcome to Dorm Hub platform!</h2>
-                  <p className="welcome-desc">Welcome to Dorm Hub platform ! Dorm Hub is an online platform developed in the user friendly interface to make it easier for SDU students to book a seat in a dormitory.</p>
+                  <h2 className="welcome-title">Welcome to Dorm Hub Kazakhstan!</h2>
+                  <p className="welcome-desc">Dorm Hub Kazakhstan simplifies document submission, room booking, and accommodation tracking for students from different universities across the country.</p>
               </div>
           </div>
       </div>
@@ -277,6 +292,14 @@ console.log("Gender: " + gender);
                       onChange={e => setIdNum(e.target.value)}
                       required
                       />
+                    </div>
+                    <div className="field-component field-signup">
+                      <select id="university-select" value={university} onChange={(e) => setSelectedUniversity(e.target.value)}>
+                          <option value="">Select the university</option>
+                          {universities.map((item) => (
+                            <option key={item.id} value={item.id}>{item.name}</option>
+                          ))}
+                      </select>
                     </div>
                     <div className="field-component field-signup">
                       <select id="faculty-select" value={faculty} onChange={handleFacultyChange}>

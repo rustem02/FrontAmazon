@@ -3,15 +3,17 @@ import Navbar from '../components/Navbar'
 import { useNavigate } from 'react-router-dom'
 import AuthContext from '../context/AuthContext'
 import axios from 'axios'
+import { useTranslation } from 'react-i18next';
 
 export default function MainPage() {
     const { authTokens } = useContext(AuthContext)
+    const { t } = useTranslation();
 
     const [userBookedEarlier, setUserBookedEarlier] = useState('')
     const [userProfile, setUserProfile] = useState('')
-    const [isStaff, setStaff] = useState('')
 
     const navigate = useNavigate();
+    const hasActiveBooking = Array.isArray(userBookedEarlier) && userBookedEarlier.length > 0;
 
     const handleClickBookNow = async ()=> {
         const response = await axios.get('documents/get/', {
@@ -23,14 +25,14 @@ export default function MainPage() {
         const res = response.data[0]
         console.log("Doc is submitted: ", userProfile.is_doc_submitted);
 
-        if(userProfile.is_doc_submitted == false){
+        if (userProfile.is_doc_submitted === false) {
             let messageDocSubmissionTxt = 'you must first submit the documents to the Dorm administration!';
             localStorage.setItem('messageDocSubm', messageDocSubmissionTxt)
             navigate('/oops');
         }else{
             if(res && res.hasOwnProperty('is_verified')){
                 const userDocVerified = res.is_verified;
-                if(userDocVerified == true){
+                if (userDocVerified === true) {
                     navigate('/booking') 
                 }else{
                     let messageDocSubmissionTxt = 'the Dorm administration must verify your documents';
@@ -89,54 +91,90 @@ export default function MainPage() {
     }, [authTokens]);
     localStorage.setItem('userProfile', JSON.stringify(userProfile))
 
-    useEffect(() => {
-        if (authTokens) {
-          const userInfo = authTokens.user
-          setStaff(userInfo.is_staff) // Предполагая, что email содержится в токене
-        }
-      }, [authTokens]);
-
-    // console.log(userProfile.is_doc_submitted);
-
   return (
     <div className='main-page'>
         <Navbar/>
         <section className="wrapper">
             <header className='header'>
                 <div className="title-main">
-                    <h1>Booking platform —Dorm Hub</h1>
-                    <p>This website is intended for booking places in the "SDU University" dormitories. It’s a user friendly platform that will allow all students, especially first-year students who want to live in dormitories, to book places while at home. Because this platform allows students to adapt easily and book with peace of mind. </p>
+                    <h1>{t('main.title')}</h1>
+                    <p>This platform is designed for dormitory placement across universities in Kazakhstan. Students can submit documents, track verification, book a bed, and complete payment in one transparent digital flow.</p>
                     <div className="btn-group">
-                        {isStaff ? null
-                        :(
-                            <>
-                                {userBookedEarlier == '' ? (
-                                    <button className="btn-book" onClick={()=>handleClickBookNow()}>Book Now</button>
-                                ):(
-                                    <button className="btn-book" onClick={()=>navigate('/my-booking')}>My Bookings</button>
-                                )}
-        
-                                {userProfile.is_doc_submitted == true ? (
-                                    <button className="btn-submission" onClick={()=>navigate('/update-submission')}>Update Submission</button>
-                                ):(
-                                    <button className="btn-submission" onClick={()=>navigate('/document-submission')}>Document Submission</button>
-                                )}
-                            </>
-                        )}
+                        <>
+                            {hasActiveBooking ? (
+                                <button className="btn-book" onClick={()=>navigate('/my-booking')}>{t('main.myBookings')}</button>
+                            ):(
+                                <button className="btn-book" onClick={()=>handleClickBookNow()}>{t('main.bookNow')}</button>
+                            )}
+
+                            {hasActiveBooking && (
+                                <button className="btn-submission" onClick={()=>navigate('/payment-booking')}>
+                                    {t('main.paymentPage')}
+                                </button>
+                            )}
+
+                            {!hasActiveBooking && (
+                                <button className="btn-submission" onClick={()=>navigate('/booking')}>
+                                    {t('main.openBooking')}
+                                </button>
+                            )}
+
+                            <button className="btn-submission" onClick={()=>navigate('/support-chat')}>
+                                {t('main.supportChat')}
+                            </button>
+
+                            {userProfile.is_doc_submitted === true ? (
+                                <button className="btn-submission" onClick={()=>navigate('/update-submission')}>{t('main.updateSubmission')}</button>
+                            ):(
+                                <button className="btn-submission" onClick={()=>navigate('/document-submission')}>{t('main.documentSubmission')}</button>
+                            )}
+                        </>
                     </div>
                 </div>
                 <div className="dorm-img">
-                    <img src={require('../img/dorm-img.png')} alt="dorm"/>
+                    <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80" alt="University dormitory"/>
                 </div>
             </header>
         </section>
+
+        <section className='wrapper quick-actions-section'>
+            <h2>{t('main.quickActionsTitle')}</h2>
+            <p>{t('main.quickActionsDesc')}</p>
+            <div className='quick-actions-grid'>
+              <button className='quick-action-card' onClick={handleClickBookNow}>
+                <h3>{t('main.bookNow')}</h3>
+                <p>{t('main.quickBookDesc')}</p>
+              </button>
+              <button className='quick-action-card' onClick={() => navigate('/my-booking')}>
+                <h3>{t('main.myBookings')}</h3>
+                <p>{t('main.quickMyBookingDesc')}</p>
+              </button>
+              <button
+                className='quick-action-card'
+                onClick={() => navigate('/payment-booking')}
+                disabled={!hasActiveBooking}
+                title={!hasActiveBooking ? t('main.paymentDisabledHint') : ''}
+              >
+                <h3>{t('main.paymentPage')}</h3>
+                <p>{hasActiveBooking ? t('main.quickPaymentDesc') : t('main.paymentDisabledHint')}</p>
+              </button>
+              <button className='quick-action-card' onClick={() => navigate('/support-chat')}>
+                <h3>{t('main.supportChat')}</h3>
+                <p>{t('main.quickChatDesc')}</p>
+              </button>
+              <button className='quick-action-card' onClick={() => navigate('/document-submission')}>
+                <h3>{t('main.documentSubmission')}</h3>
+                <p>{t('main.quickDocsDesc')}</p>
+              </button>
+            </div>
+        </section>
         <section className="main-points">
-            <h2>Main Points</h2>
+            <h2>{t('main.points')}</h2>
             <div className='main-points-container'>
                 <div class="vision">
                     <div className='vision-circle'></div>
                     <h3>Vision</h3>
-                    <p>Transforming dormitory booking with services into a convenient system for SDU students.</p>
+                    <p>Transforming dormitory services into a convenient and transparent system for all students in Kazakhstan.</p>
                 </div>
                 <div class="mission">
                     <div className='mission-circle'></div>
@@ -166,12 +204,12 @@ export default function MainPage() {
                     </div>
                 </div>
                 <div className='docSubmissin-instructional-img'>
-                    <img src={require('../img/docSubmissionImg.png')}  alt="doc-submission"/>
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80"  alt="Document submission tutorial"/>
                 </div>
             </div>
             <div className='docSubmissin-instructional instruction-videos-item'>
                 <div className='docSubmissin-instructional-img instructional-img-left'>
-                    <img src={require('../img/make-booking.jpg')}  alt="doc-submission"/>
+                    <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80"  alt="Booking tutorial"/>
                 </div>
                 <div className='docSubmissin-instructional-content docSubmissin-instructional-content-right'>
                     <div className='content-right'>
@@ -203,9 +241,9 @@ export default function MainPage() {
              </div>
              <div className='footer-content'>
                 <div className='footer-item'>
-                    <h5>The head of the SDU Dormitory:</h5>
-                    <p>dormserviceboys@sdu.edu.kz</p>
-                    <p>(mob.) +7 702 958 7910</p>
+                    <h5>Dormitory administration support:</h5>
+                    <p>support@dormhub.kz</p>
+                    <p>(hotline) +7 700 000 0000</p>
                 </div>
                 <div className='footer-item'>
                     <h5>Reception/ plumbing services</h5>

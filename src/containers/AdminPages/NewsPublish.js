@@ -15,7 +15,7 @@ export default function NewsPublish() {
     useEffect(()=>{
         const getNewsList = async() =>{
             try{
-                const response = await fetch('http://13.49.18.134/news/', {
+                const response = await fetch('http://localhost:8000/news/', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${authTokens.access}`,
@@ -39,9 +39,9 @@ export default function NewsPublish() {
             <section className='dorm-information'>
                 <header className='dorm-information-header'>
                     <div className="title-main">
-                        <h1>SDU Dormitory News Management</h1>
+                        <h1>Dorm Hub News Management</h1>
                         <p>
-                        This page is developed for students to keep up with the news that is happening inside the SDU dormitory.You can write and publish news as a site administrator  
+                        This page helps administrators publish accommodation and campus-life updates for students from different universities in Kazakhstan.
                         </p>
                         <div className='btn-group-publish'>
                             <a href='/add-news'>
@@ -50,15 +50,15 @@ export default function NewsPublish() {
                         </div>
                     </div>
                     <div className="dorm-img">
-                        <img src={require('../../img/dorm-img.png')} alt="dorm"/>
+                        <img src="https://images.unsplash.com/photo-1496307653780-42ee777d4833?auto=format&fit=crop&w=1200&q=80" alt="dorm"/>
                     </div>
                 </header>
             </section>
             <section className='latest-news'>
                 <h2>Latest news</h2>
                 <a href='' className='link-news-reading'>
-                    <img src={require('../../img/reception.jpg')} alt='latest-news-img'/>
-                    <h1>For the fall semester, registration at SDU Dormitory is open!</h1>
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=80" alt='latest-news-img'/>
+                    <h1>Applications for the new semester are now open for partner universities.</h1>
                 </a>
             </section>
             <section className='news-list'>
@@ -67,7 +67,7 @@ export default function NewsPublish() {
                         All news
                     </button >
                     <button className={numTurn === 2 ? 'active-list' : ''} onClick={()=>setNumTurnClick(2)}>
-                        SDU Dorm News
+                        Dorm Hub News
                     </button>
                     <button className={numTurn === 3 ? 'active-list' : ''} onClick={()=>setNumTurnClick(3)}>
                         AC Catering News
@@ -94,7 +94,7 @@ export default function NewsPublish() {
                 (
                     <div className='news-list-box'>
                         {newsList
-                        .filter(newsItem => newsItem.title === "SDU Dorm News")
+                        .filter(newsItem => newsItem.title === "Dorm Hub News")
                         .map(newsItem => (
                             <div className='news-list-item' key={newsItem.id}>
                                 <div className='list-item-img'>
@@ -146,9 +146,9 @@ export default function NewsPublish() {
              </div>
              <div className='footer-content'>
                 <div className='footer-item'>
-                    <h5>The head of the SDU Dormitory:</h5>
-                    <p>dormserviceboys@sdu.edu.kz</p>
-                    <p>(mob.) +7 702 958 7910</p>
+                    <h5>Dormitory administration support:</h5>
+                    <p>support@dormhub.kz</p>
+                    <p>(hotline) +7 700 000 0000</p>
                 </div>
                 <div className='footer-item'>
                     <h5>Reception/ plumbing services</h5>

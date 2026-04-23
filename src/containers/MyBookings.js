@@ -7,6 +7,8 @@ export default function MyBookings() {
     const {authTokens} =useContext(AuthContext)
     const [userBooking, setUserBooking] = useState('')
     const [corridorNum, setCorridorNum] = useState('')
+    const [bookingStatus, setBookingStatus] = useState('Active booking')
+    const [paymentStatus, setPaymentStatus] = useState('Pending')
     const room = userBooking.room_number
     const floor= Math.round(room/100)
 
@@ -21,7 +23,12 @@ export default function MyBookings() {
                 });
 
                 const res = getResponse.data
-                setUserBooking(res[0].seat_detail)
+                if (res.length > 0) {
+                    setUserBooking(res[0].seat_detail)
+                    setBookingStatus('Confirmed')
+                } else {
+                    setBookingStatus('No active booking')
+                }
                 console.log("Пользователь забронировал: ", res);
             } catch (error) {
                 // Обработка ошибок
@@ -30,10 +37,39 @@ export default function MyBookings() {
         };
 
         fetchData(); // Вызов функции для выполнения запроса при загрузке компонента
-    }, []);
-       
+    }, [authTokens]);
 
     useEffect(() => {
+        const fetchPaymentReceipt = async () => {
+            try {
+                const response = await axios.get('payment/receipt/', {
+                    headers: {
+                        'Authorization': `Bearer ${authTokens.access}`,
+                    }
+                });
+                const receiptStatus = response?.data?.receipt?.status;
+                if (receiptStatus) {
+                    setPaymentStatus(receiptStatus);
+                    return;
+                }
+            } catch (error) {
+                console.log('Payment receipt is not available yet');
+            }
+
+            const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+            if (userProfile?.is_dorm) {
+                setPaymentStatus('Paid');
+            }
+        };
+
+        fetchPaymentReceipt();
+    }, [authTokens]);
+
+    useEffect(() => {
+        if (!room) {
+            return;
+        }
+
         const recognizeCorridorNum = (room)=>{
             if (room) {
                 let num = room % 100;
@@ -60,6 +96,7 @@ export default function MyBookings() {
         <div className='my-booking-container'>
             <h1>Booking</h1>
             <h3>You have successfully completed your booking, the booking details are as follows:</h3>
+            <h3>Booking status: {bookingStatus} | Payment status: {paymentStatus}</h3>
             <div className='table-container'>
                 <table className='table'>
                     <thead>
@@ -82,7 +119,7 @@ export default function MyBookings() {
                     </tbody>
                     <tfoot>
                         <tr className='table-cost'>
-                            <td colspan="5">Total cost: 195 000 KZT</td>
+                            <td colSpan="5">Total cost: 195 000 KZT</td>
                         </tr>
                     </tfoot>
                 </table>

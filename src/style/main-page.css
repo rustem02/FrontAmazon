@@ -19,6 +19,11 @@
     margin: 0 auto;
 }
 
+/* Small extra spacing below fixed navbar on main page */
+.main-page .wrapper:first-of-type {
+    padding-top: 20px;
+}
+
 @font-face {
 	font-family: "SF Pro Display medium";
 	src: url("../fonts/SF-Pro-Display-Medium.otf");
