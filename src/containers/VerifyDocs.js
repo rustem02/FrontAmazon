@@ -36,7 +36,6 @@ export default function VerifyDocs() {
                 const verifiedUsers = res.filter(doc => doc.is_verified).map(doc => doc.user_data.email);
 
                 setVerified(verifiedUsers); // Сохраняем массив верифицированных пользователей
-                console.log(verified);
             }catch(err){
                 console.error('Ошибка при получении списка документов:', err);
             }
@@ -70,9 +69,8 @@ export default function VerifyDocs() {
 
                         <div className='detailed-verify'>
                             <div className='indicator' style={{backgroundColor: verified.includes(doc.user_data.email) ? '#00A35D' : '#F3A367' }}></div>
-                            <Link 
-                            to = {{ pathname: `/detailed-doc/${doc.user_data.email}` }}>
-                                <a>detailed &gt;</a>
+                            <Link to={`/detailed-doc/${doc.user_data.email}`}>
+                                detailed &gt;
                             </Link>
                         </div>
                     </div> // Пример отображения документов

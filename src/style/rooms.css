@@ -1,0 +1,362 @@
+.rooms-container{
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 140px;
+}
+
+.dorm-information-header{
+    padding-top: 100px;
+}
+
+/* numeric data section */
+
+.numeric-data-dorm{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 170px;
+}
+
+.data-dorm-item{
+    width: calc(20% - 30px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #212153;
+    color: #FFFFFF;
+    padding: 24px 35px;
+    border-radius: 16px;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+
+}
+
+.data-dorm-item h4, .data-dorm-item h1{
+    font-family: 'SF Pro Display';
+    font-weight: 700;
+}
+
+.data-dorm-item h1{
+    font-size: 46px;
+    line-height: 57.28px;
+    color: #F3A367;
+}
+
+.data-dorm-item h4{
+    font-size: 16px;
+    line-height: 21.48px;
+}
+
+.data-dorm-item p{
+    font-family: 'SF Pro Display medium';
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19.09px;
+    letter-spacing: -0.02em;
+    color: #FFFFFFB2;
+}
+
+/* Dormitory review */
+
+.dormitory-review h1{
+    font-family: 'SF Pro Display';
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 57.28px;
+    text-align: center;
+    color: #173F8F;
+    margin-bottom: 90px;
+}
+
+.dormitory-review{
+    width: 90%;
+}
+
+.room-has-info>h2{
+    font-family: 'SF Pro Display';
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 40.57px;
+    text-align: center;
+    color: #173F8F;
+    margin-bottom: 45px;
+}
+
+.room-numeric-info{
+    margin-bottom: 98px;
+}
+
+/* NumTurn == 2 Social Part*/
+
+.social-header h1{
+    font-family: 'SF Pro Display';
+    font-size: 45px;
+    font-weight: 700;
+    line-height: 57.28px;
+    text-align: left;
+    color: #212153;
+    margin-bottom: 43px;
+}
+
+.social-header-container{
+    display: flex;
+    padding: 24px 24px 24px 12px;
+    background-color: #BFE0EA;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    border-radius: 33px;
+    width: 80%;
+    align-items: center;
+    margin-bottom: 140px;
+    box-sizing: border-box;
+}
+
+.social-header-content{
+    width: 50%;
+    padding: 40px;
+    color: #212153;
+    box-sizing: border-box;
+}
+
+.social-header-content h2{
+    font-size: 28px;
+    line-height: 40.57px;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.social-header-content p{
+    font-family: 'SF Pro Display medium';
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.09px;
+    letter-spacing: -0.02em;
+    text-align: left;
+}
+
+.social-header-img{
+    width: 50%;
+    height: 100%;
+}
+
+.social-header-img img{
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+}
+
+.social-life-boxes{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 130px;
+}
+
+.social-box-item{
+    display: flex;
+    flex-direction: column;
+    width: calc(33% - 15px);
+}
+
+.social-box-item img{
+    width: 100%;
+    height: 291px;
+    object-fit: cover;    
+    border-radius: 30px 30px 0 0;
+}
+
+.social-item-content{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: #212153;
+    border-radius: 0 0 30px 30px;
+    padding: 20px 67px 19px 41px;
+    /* padding-right: 67px;
+    padding-left: 41px; */
+}
+
+.social-item-content h3{
+    font-size: 18px;
+    line-height: 28.64px;
+    text-align: left;
+    color: #F3A367;
+    margin-bottom: 8px;
+}
+
+.social-item-content p, .social-item-content a{
+    font-family: 'SF Pro Display medium';
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19.09px;
+    letter-spacing: -0.02em;
+}
+
+.social-item-content p{
+    color: #FFFFFFCC;
+    margin-bottom: 8px;
+}
+
+.social-item-content a{
+    text-decoration: none;
+    color: #212153;
+    background-color: #F3A367;
+    align-self: flex-start;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-top: auto;
+}
+
+.social-life-review{
+    width: 80%;
+}
+
+.instruction-videos-item{
+    align-items: center;
+}
+
+.social-life-img img{
+ border: none;
+}
+
+@media (max-width:1270px){
+    .data-dorm-item {
+        width: 15%;
+    }
+    .data-dorm-item h1 {
+        font-size: 40px;
+    }
+    .data-dorm-item p {
+        font-size: 13px;
+    }
+    .data-dorm-item h4 {
+        font-size: 15px;
+    }
+    .dorm-information-header {
+        padding-top: 60px;
+    }
+    .title-main p {
+        font-size: 15px;
+    }
+    .numeric-data-dorm {
+        margin-bottom: 130px;
+    }
+    .dormitory-review h1 {
+        margin-bottom: 50px;
+        font-size: 36px;
+    }
+    .docSubmissin-instructional {
+        margin-bottom: 50px;
+    }
+    .room-has-info>h2 {
+        font-size: 28px;
+    }
+    .social-header h1 {
+        font-size: 40px;
+    }
+    .social-header-content h2 {
+        font-size: 25px;
+        line-height: 38px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width:997px){
+    .social-header-container {
+        width: 100%;
+        margin-bottom: 90px;
+    }
+    .social-header h1 {
+        font-size: 36px;
+    }
+    .social-life-boxes {
+        flex-direction: column;
+        gap: 65px;
+    }
+    .social-box-item {
+        width: 100%;
+    }
+    .social-life-item{
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+    .social-life-item:nth-child(2){
+        flex-direction: column;
+    }
+    .social-life-content{
+        width: 100%;
+    }
+    .social-life-content div{
+        width: 100%;
+    }
+    .social-life-img{
+        width: 100%;
+    }
+    .numeric-data-dorm{
+        flex-direction: column;
+        gap: 30px;
+    }
+    .data-dorm-item{
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .dorm-information-header{
+        flex-direction: column-reverse;
+    }
+}
+
+@media (max-width:768px){
+    .dormitory-item:nth-child(3){
+        flex-direction: column;
+    }
+    .dormitory-item:nth-child(5){
+        flex-direction: column;
+    }
+    .social-header-container{
+        flex-direction: column-reverse;
+    }
+    .social-header-content {
+        width: 100%;
+    }
+    .social-header-img {
+        width: 80%;
+    }
+    .social-header h1 {
+        font-size: 32px;
+    }
+    .social-life-item:nth-child(3) {
+        flex-direction: column-reverse;
+    }
+}
+
+@media (max-width: 576px) { 
+    .dorm-information-header {
+        padding-top: 20px;
+    }
+    .social-header h1 {
+        font-size: 27px;
+    }
+    .social-header-content h2 {
+        font-size: 23px;
+    }
+    .social-header-content p {
+        font-size: 15px;
+    }
+    .data-dorm-item {
+        gap: 16px;
+    }
+    .data-dorm-item h1 {
+        font-size: 37px;
+    }
+    .dormitory-review h1 {
+        font-size: 32px;
+    }
+    .numeric-data-dorm {
+        margin-bottom: 90px;
+    }
+    .data-dorm-item {
+        gap: 13px;
+    }
+    .data-dorm-item {
+        padding: 20px 30px;
+    }
+}

@@ -41,7 +41,7 @@ export default function UserDocuments() {
             if(email){
                 fetchDocuments()
             }
-    },[email]);
+    },[email, authTokens]);
 
     const verifyUser = async () => {
         try {
@@ -99,19 +99,27 @@ export default function UserDocuments() {
                 <div className='user-documents'>
                     <div className='user-docs-item'>
                         <p>Form-075</p>
-                        <img src={userDocuments.form_075} alt="dorm"/>
+                        <a href={userDocuments.form_075} target="_blank" rel="noopener noreferrer"><img src={userDocuments?.form_075?.endsWith('.pdf') ? require('../img/icons/icon-pdf.png') : 
+                                  userDocuments?.form_075?.endsWith('.docx') || userDocuments?.form_075?.endsWith('.doc') ? 
+                                  require('../img/icons/icon-docx.png') : userDocuments.form_075} alt="dorm"/></a>
                     </div>
                     <div className='user-docs-item'>
                         <p>Identity Card Copy</p>
-                        <img src={userDocuments.identity_card_copy} alt="dorm"/>
+                        <a href={userDocuments.identity_card_copy} target="_blank" rel="noopener noreferrer"><img src={userDocuments?.identity_card_copy?.endsWith('.pdf') ? require('../img/icons/icon-pdf.png') : 
+                                  userDocuments?.identity_card_copy?.endsWith('.docx') || userDocuments?.identity_card_copy?.endsWith('.doc') ? 
+                                  require('../img/icons/icon-docx.png') : userDocuments.identity_card_copy} alt="dorm"/></a>
                     </div>
                     <div className='user-docs-item'>
                         <p>Photo 3x4</p>
-                        <img src={userDocuments.photo_3x4} alt="dorm"/>
+                        <a href={userDocuments.photo_3x4} target="_blank" rel="noopener noreferrer"><img src={userDocuments?.photo_3x4?.endsWith('.pdf') ? require('../img/icons/icon-pdf.png') : 
+                                  userDocuments?.photo_3x4?.endsWith('.docx') || userDocuments?.photo_3x4?.endsWith('.doc') ? 
+                                  require('../img/icons/icon-docx.png') : userDocuments.photo_3x4} alt="dorm"/></a>
                     </div>
                     <div className='user-docs-item'>
                         <p>Statement</p>
-                        <img src={userDocuments.statement} alt="dorm"/>
+                        <a href={userDocuments.statement} target="_blank" rel="noopener noreferrer"><img src={userDocuments?.statement?.endsWith('.pdf') ? require('../img/icons/icon-pdf.png') : 
+                                  userDocuments?.statement?.endsWith('.docx') || userDocuments?.statement?.endsWith('.doc') ? 
+                                  require('../img/icons/icon-docx.png') : userDocuments.statement} alt="dorm"/></a>
                     </div>
                 </div>
             </div>

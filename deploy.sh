@@ -1,105 +1,82 @@
 #!/bin/bash
 
-echo "deleting old app"
+echo "Deleting old app..."
 sudo rm -rf /var/www/
 
+echo "deleting old app"
+sudo rm -rf /var/www/html/*
+
 echo "creating app folder"
-sudo mkdir -p /var/www/frontamazon
-
-echo "moving files to app folder"
-sudo mv  * /var/www/frontamazon
-
-# Navigate to the app directory
-cd /var/www/frontamazon/
-sudo mv env .env
+sudo mkdir -p /var/www/html/myapp
+sudo chown -R $EC2_USERNAME:$EC2_USERNAME /var/www/html/myapp
 
 
-sudo rm -f /etc/nginx/sites-available/myapp
 
-# Check if Node.js is installed, install if not
+echo "cloning the latest version of the code"
+# Убедитесь, что у вас есть доступ к вашему репозиторию
+sudo git clone https://github.com/BGalymbek/FrontAmazon.git /var/www/html/myapp
+
+cd /var/www/html/myapp
+
+echo "installing node and npm"
+# Установка Node.js и npm, если они еще не установлены
 if ! command -v node > /dev/null; then
-    echo "Installing Node.js..."
+    curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
     sudo apt-get install -y nodejs
+
 fi
 
-# Check if NPM is installed, install if not
-if ! command -v npm > /dev/null; then
-    echo "Installing npm..."
-    sudo apt-get install -y npm
-fi
+npm install react-scripts@latest
 
-
-echo "Installing server dependencies..."
-sudo npm install -g serve
-
-echo "Installing PM2..."
-sudo npm install -g pm2
-
-echo "Installing application dependencies..."
+echo "installing project dependencies"
+sudo rm -rf node_modules
+sudo rm package-lock.json
 sudo npm install
+sudo npm install pm2@latest -g
 
 
-# Update and install Nginx if not already installed
+echo "building the project"
+sudo npm run build
+sudo pm2 serve build/ 80 --spa
+
+
+echo "moving build to root directory"
+sudo mv build/* /var/www/html/
+
+# Настройка Nginx для раздачи статических файлов
 if ! command -v nginx > /dev/null; then
-    echo "Installing Nginx..."
+    echo "installing nginx"
     sudo apt-get update
     sudo apt-get install -y nginx
 fi
 
-# Configure Nginx to serve the React application
-# if [ ! -f /etc/nginx/sites-available/myapp ]; then
-#     sudo rm -f /etc/nginx/sites-enabled/default
-#     sudo bash -c 'cat > /etc/nginx/sites-available/myapp <<EOF
-# server {
-#     listen 80;
-#     server_name _;
+sudo rm -f /etc/nginx/sites-available/default
 
-#     location / {
-#         root /var/www/html/myapp;
-#         try_files \$uri /index.html;
-#     }
-# }
-# EOF'
-#     sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled
-#     sudo systemctl restart nginx
-# else
-#     echo "Nginx configuration already exists."
-# fi
-
-# Configure Nginx to act as a reverse proxy if not already configured
-if [ ! -f /etc/nginx/sites-available/myapp ]; then
-    sudo rm -f /etc/nginx/sites-enabled/default
-    sudo bash -c 'cat > /etc/nginx/sites-available/myapp <<EOF
+# Конфигурация сервера Nginx
+if [ ! -f /etc/nginx/sites-available/default ]; then
+    sudo bash -c 'cat > /etc/nginx/sites-available/default <<EOF
 server {
     listen 80;
     server_name _;
 
     location / {
-        include proxy_params;
-        proxy_pass http://unix:/var/www/langchain-app/myapp.sock;
+        root /var/www/html;
+        index index.html index.htm;
+        try_files \$uri \$uri/ /index.html;
     }
 }
 EOF'
 
-    sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled
     sudo systemctl restart nginx
+    
+
 else
-    echo "Nginx reverse proxy configuration already exists."
+    echo "Nginx configuration already exists."
 fi
 
-
-echo "Starting Node.js app with PM2..."
-sudo pm2 start app.js --name "myapp"
-
-echo "Setting up PM2 to restart on system boot..."
-sudo pm2 save
-sudo pm2 startup systemd
-
-sudo pm2 start serve --name "react-app" -- -s build -l 3000
-
+sudo systemctl status nginx
+cd /var/www/html/myapp
 sudo pm2 save
 sudo pm2 startup
-
-
 
 echo "Deployment is completed 🚀"

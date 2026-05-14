@@ -1,0 +1,25 @@
+.news-publish-container{
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 140px;
+    padding-bottom: 140px;
+}
+
+.btn-group-publish{
+    display: flex;
+    gap: 24px;
+}
+
+.btn-group-publish a{
+    text-decoration: none;
+    font-family: 'SF Pro Display medium';
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 19.09px;
+    letter-spacing: -0.02em;
+    text-align: center;
+    background-color: #212153;
+    color: #fff;
+    padding: 14px 18px;
+    border-radius: 8px;
+}

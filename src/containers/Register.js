@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 export default function Register() {
@@ -19,6 +19,28 @@ export default function Register() {
   const [successfullyRegister, setSuccessfullyRegister] = useState('')
   const [faculty, setSelectedFaculty] = useState("");
   const [specialty, setSelectedSpeciality] = useState("");
+  const [university, setSelectedUniversity] = useState("");
+  const [universities, setUniversities] = useState([]);
+  const [faculties, setFaculties] = useState([]);
+  const [specialitiesFromApi, setSpecialitiesFromApi] = useState([]);
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const [universitiesResponse, facultiesResponse, specialitiesResponse] = await Promise.all([
+          axios.get('universities/'),
+          axios.get('faculties/'),
+          axios.get('specialities/'),
+        ]);
+        setUniversities(Array.isArray(universitiesResponse.data) ? universitiesResponse.data : []);
+        setFaculties(Array.isArray(facultiesResponse.data) ? facultiesResponse.data : []);
+        setSpecialitiesFromApi(Array.isArray(specialitiesResponse.data) ? specialitiesResponse.data : []);
+      } catch (error) {
+        console.error('Cannot fetch register dictionaries: ', error);
+      }
+    };
+    fetchInitialData();
+  }, []);
 
   const specialities = [
     {
@@ -174,13 +196,13 @@ export default function Register() {
     
      try{
       const response = await axios.post('register/', {
-        first_name, last_name, id_number, specialty, faculty, birth_date, gender, email, password, password_confirm
+        first_name, last_name, id_number, specialty, faculty, university, birth_date, gender, email, password, password_confirm
       });
 
       // console.log(response.response.data.email);
       console.log(response);
 
-      if(response.status == 201){
+      if(response.status === 201){
         setTimeout(()=> setRedirect(true),10000);
         setErrorRegister('')
         setSuccessfullyRegister('You registered succesfully! Please check your email')
@@ -212,11 +234,13 @@ export default function Register() {
 };
 
  const getSpecialityOptions = (faculty) =>{
-    // Фильтруем специальности по переданному факультету
-    const filteredSpecialities = specialities.filter(speciality => speciality.faculty == faculty);
+    const sourceSpecialities = specialitiesFromApi.length > 0 ? specialitiesFromApi : specialities;
+    const filteredSpecialities = sourceSpecialities.filter(
+      (specialityItem) => String(specialityItem.faculty) === String(faculty)
+    );
     
     // Получаем только имена специальностей
-    const specialityRes = filteredSpecialities.map(speciality => ({ id: speciality.id, name: speciality.name }));
+    const specialityRes = filteredSpecialities.map((specialityItem) => ({ id: specialityItem.id, name: specialityItem.name }));
 
     return specialityRes;
  }
@@ -233,11 +257,11 @@ console.log("Gender: " + gender);
       <div className="welcome">
           <div className="welcome-items">
               <div className="img">
-                  <img src={require('../img/SignUpImg.png')} alt="img"/>
+                  <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80" alt="img"/>
               </div>
               <div className="welcome-content">
-                  <h2 className="welcome-title">Welcome to Dorm Hub platform!</h2>
-                  <p className="welcome-desc">Welcome to Dorm Hub platform ! Dorm Hub is an online platform developed in the user friendly interface to make it easier for SDU students to book a seat in a dormitory.</p>
+                  <h2 className="welcome-title">Welcome to Dorm Hub Kazakhstan!</h2>
+                  <p className="welcome-desc">Dorm Hub Kazakhstan simplifies document submission, room booking, and accommodation tracking for students from different universities across the country.</p>
               </div>
           </div>
       </div>
@@ -279,12 +303,30 @@ console.log("Gender: " + gender);
                       />
                     </div>
                     <div className="field-component field-signup">
+                      <select id="university-select" value={university} onChange={(e) => setSelectedUniversity(e.target.value)}>
+                          <option value="">Select the university</option>
+                          {universities.map((item) => (
+                            <option key={item.id} value={item.id}>{item.name}</option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="field-component field-signup">
                       <select id="faculty-select" value={faculty} onChange={handleFacultyChange}>
-                          <option value="">Select the faculty</option> {/* Опция по умолчанию */}
-                          <option value="1">Faculty of Engineering and Natural sciences</option> {/* Значения для этажей */}
-                          <option value="5">Faculty of Education and Humanities</option>
-                          <option value="6">Business School</option>
-                          <option value="7">Faculty of Law and Social sciences</option>
+                          <option value="">Select the faculty</option>
+                          {faculties.length > 0 ? (
+                            faculties.map((facultyItem) => (
+                              <option key={facultyItem.id} value={facultyItem.id}>
+                                {facultyItem.name}
+                              </option>
+                            ))
+                          ) : (
+                            <>
+                              <option value="1">Faculty of Engineering and Natural sciences</option>
+                              <option value="5">Faculty of Education and Humanities</option>
+                              <option value="6">Business School</option>
+                              <option value="7">Faculty of Law and Social sciences</option>
+                            </>
+                          )}
                       </select>
                     </div>
                     <div className="field-component field-signup">
@@ -303,11 +345,6 @@ console.log("Gender: " + gender);
                       />
                     </div>
                     <div className="field-component field-signup">
-                      {/* <input 
-                      type="text" placeholder="Gender" id="gender"
-                      onChange={e => setGender(e.target.value)}
-                      required
-                      /> */}
                       <select id="gender-select" value={gender} onChange={handleGenderChange}>
                           <option value="">Select the gender</option> {/* Опция по умолчанию */}
                           <option value="Male">Male</option> {/* Значения для этажей */}

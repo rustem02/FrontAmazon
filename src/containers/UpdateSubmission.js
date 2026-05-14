@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
@@ -14,11 +14,11 @@ export default function UpdateSubmission() {
   const [photo_3x4, setPhoto] = useState('')
   const [form_075, setForm] = useState('')
   const [identity_card_copy, setIdentityCart] = useState('')
+  const [actionMessage, setActionMessage] = useState('')
+  const [deletingField, setDeletingField] = useState('')
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const loadDocuments = useCallback(async () => {
         try {
-            // Выполняем GET запрос
             const getResponse = await axios.get('documents/get/', {
                 headers: {
                     'Authorization': `Bearer ${authTokens.access}`,
@@ -27,18 +27,16 @@ export default function UpdateSubmission() {
 
             const res = getResponse.data
             setDocumentsOfUser(res)
-
-            // console.log("Документы пользователя: ", res);
         } catch (error) {
-            // Обработка ошибок
             console.error('Error fetching data:', error);
         }
-    };
+    }, [authTokens]);
 
-    fetchData(); // Вызов функции для выполнения запроса при загрузке компонента
-}, [authTokens]);
+  useEffect(() => {
+    loadDocuments();
+  }, [loadDocuments]);
 
-  const fetchData = async () => {
+  const submitUpdatedDocuments = async () => {
       const formData = new FormData();
 
       if (statement) {
@@ -55,22 +53,56 @@ export default function UpdateSubmission() {
       }
 
       try {
-          const response = await axios.patch('documents/update/', formData, {
+          await axios.patch('documents/update/', formData, {
               headers: {
                   'Content-Type': 'multipart/form-data',
                   'Authorization': `Bearer ${authTokens.access}`,
               },
           });
 
-          // Обработка успешного ответа
-          console.log(response.data);
+          setActionMessage('Documents were updated successfully.');
+          await loadDocuments();
           navigate('/main-page');
       } catch (err) {
+          setActionMessage('Failed to update documents.');
           console.error('You have problems: ' + err);
       }
   };
 
-  console.log(userDocuments);
+  const deleteDocument = async (fileField) => {
+    if (deletingField) {
+      return;
+    }
+
+    try {
+      setDeletingField(fileField);
+      setActionMessage('');
+      await axios.delete(`delete-document/${fileField}/`, {
+        headers: {
+          'Authorization': `Bearer ${authTokens.access}`,
+        },
+      });
+      setStatement('');
+      setPhoto('');
+      setForm('');
+      setIdentityCart('');
+      setActionMessage(`${fileField} deleted successfully.`);
+      await loadDocuments();
+    } catch (error) {
+      setActionMessage(error?.response?.data?.error || `Failed to delete ${fileField}.`);
+    } finally {
+      setDeletingField('');
+    }
+  };
+
+  const getFileName = (filePath, docName) =>{
+    if (!filePath) {
+      return `${docName}.file`;
+    }
+    const fileName = filePath.substring(filePath.lastIndexOf("/") + 1); // Получаем имя файла из пути
+    const formatName = fileName.split('.').pop().toLowerCase(); // Получаем расширение файла
+    return `${docName}.${formatName}`;   
+  }
   return (
     <div className='update-submission'>
       <Navbar/>
@@ -80,7 +112,7 @@ export default function UpdateSubmission() {
           <p className='status-txt'>Current Status of Document Submission: </p>
           <div className='status'>
             {userDocuments && userDocuments.length > 0 &&(
-              userDocuments[0].is_verified == false ? (
+              userDocuments[0].is_verified === false ? (
                 <div className='status-doc-submission' style= {{backgroundColor: '#F3A367' }}></div>
               ):(
                 <div className='status-doc-submission' style= {{backgroundColor: '#00A35D' }}></div>
@@ -88,7 +120,7 @@ export default function UpdateSubmission() {
             )}
             {userDocuments && userDocuments.length > 0 &&
               (
-                userDocuments[0].is_verified == false ? (
+                userDocuments[0].is_verified === false ? (
                   <p>Waiting verification of admin</p>
                 ):(
                   <p>Verified by Admin</p>
@@ -102,14 +134,12 @@ export default function UpdateSubmission() {
                   <>
                     <div>
                       <div className='submitted-img'>
-                        <img src={userDocuments[0].statement} alt="submited-item"/>
+                        <a href={userDocuments[0].statement} target="_blank" rel="noopener noreferrer"><img src={userDocuments[0].statement.endsWith('.pdf') ? require('../img/icons/icon-pdf.png') : 
+                          userDocuments[0].statement.endsWith('.docx') || userDocuments[0].statement.endsWith('.doc') ? 
+                          require('../img/icons/icon-docx.png') : userDocuments[0].statement} alt="submited-item"/></a>
                       </div>
                       <p>statement</p>
                     </div>
-                  </>
-                 )}
-
-                 {userDocuments && userDocuments.length > 0 && (
                     <div className='custom-file-input update-file'>
                       <input 
                         type="file" id="state" name="state"
@@ -118,8 +148,17 @@ export default function UpdateSubmission() {
                         placeholder='Updated File'
                       />
                       <img src={require('../img/update.png')} alt="logo"/>
-                      <p>{statement ? statement.name : userDocuments[0].statement.substring(userDocuments[0].statement.lastIndexOf("/") + 1)}</p>
+                      <p>{statement ? statement.name : getFileName(userDocuments[0].statement, "statement")}</p>
                     </div>
+                    <button
+                      type='button'
+                      style={{ marginTop: '8px' }}
+                      onClick={() => deleteDocument('statement')}
+                      disabled={deletingField === 'statement'}
+                    >
+                      {deletingField === 'statement' ? 'Deleting...' : 'Delete file'}
+                    </button>
+                  </>
                   )}
           </div>
           <div className='submitted-item'>
@@ -127,7 +166,9 @@ export default function UpdateSubmission() {
                   <>
                   <div>
                     <div className='submitted-img'>
-                      <img src={userDocuments[0].photo_3x4} alt="submited-item"/>
+                      <a href={userDocuments[0].photo_3x4} target="_blank" rel="noopener noreferrer"><img src={userDocuments[0].photo_3x4.endsWith('.pdf') ? require('../img/icons/icon-pdf.png') : 
+                          userDocuments[0].photo_3x4.endsWith('.docx') || userDocuments[0].photo_3x4.endsWith('.doc') ? 
+                          require('../img/icons/icon-docx.png') : userDocuments[0].photo_3x4} alt="submited-item"/></a>
                     </div>
                     <p>3x4-photo</p>
                     </div>
@@ -139,8 +180,16 @@ export default function UpdateSubmission() {
                       placeholder='Updated File'
                       />
                       <img src={require('../img/update.png')} alt="logo"/>
-                      <p>{photo_3x4 ? photo_3x4.name : userDocuments[0].photo_3x4.substring(userDocuments[0].photo_3x4.lastIndexOf("/") + 1)}</p>
+                      <p>{photo_3x4 ? photo_3x4.name : getFileName(userDocuments[0].photo_3x4, "photo_3x4")}</p>
                     </div>
+                    <button
+                      type='button'
+                      style={{ marginTop: '8px' }}
+                      onClick={() => deleteDocument('photo_3x4')}
+                      disabled={deletingField === 'photo_3x4'}
+                    >
+                      {deletingField === 'photo_3x4' ? 'Deleting...' : 'Delete file'}
+                    </button>
                   </>
                 )}
           </div>
@@ -149,7 +198,9 @@ export default function UpdateSubmission() {
                   <>
                     <div>
                       <div className='submitted-img'>
-                        <img src={userDocuments[0].form_075} alt="submited-item"/>
+                      <a href={userDocuments[0].form_075} target="_blank" rel="noopener noreferrer"><img src={userDocuments[0].form_075.endsWith('.pdf') ? require('../img/icons/icon-pdf.png') : 
+                          userDocuments[0].form_075.endsWith('.docx') || userDocuments[0].form_075.endsWith('.doc') ? 
+                          require('../img/icons/icon-docx.png') : userDocuments[0].form_075} alt="submited-item"/></a>
                       </div>
                       <p>075-form</p>
                     </div>
@@ -161,8 +212,16 @@ export default function UpdateSubmission() {
                       placeholder='Updated File'
                       />
                       <img src={require('../img/update.png')} alt="logo"/>
-                      <p>{form_075 ? form_075.name : userDocuments[0].form_075.substring(userDocuments[0].form_075.lastIndexOf("/") + 1)}</p>
+                      <p>{form_075 ? form_075.name : getFileName(userDocuments[0].form_075, "form_075")}</p>
                     </div>
+                    <button
+                      type='button'
+                      style={{ marginTop: '8px' }}
+                      onClick={() => deleteDocument('form_075')}
+                      disabled={deletingField === 'form_075'}
+                    >
+                      {deletingField === 'form_075' ? 'Deleting...' : 'Delete file'}
+                    </button>
                   </>
                 )}
           </div>
@@ -171,7 +230,9 @@ export default function UpdateSubmission() {
                   <>
                     <div>
                       <div className='submitted-img'>
-                        <img src={userDocuments[0].identity_card_copy} alt="submited-item"/>
+                        <a href={userDocuments[0].identity_card_copy} target="_blank" rel="noopener noreferrer"><img src={userDocuments[0].identity_card_copy.endsWith('.pdf') ? require('../img/icons/icon-pdf.png') : 
+                          userDocuments[0].identity_card_copy.endsWith('.docx') || userDocuments[0].identity_card_copy.endsWith('.doc') ? 
+                          require('../img/icons/icon-docx.png') : userDocuments[0].identity_card_copy} alt="submited-item"/></a>
                       </div>
                       <p>identity-card</p>
                     </div>
@@ -183,8 +244,16 @@ export default function UpdateSubmission() {
                         placeholder='Updated File'
                         />
                         <img src={require('../img/update.png')} alt="logo"/>
-                        <p>{identity_card_copy ? identity_card_copy.name : userDocuments[0].identity_card_copy.substring(userDocuments[0].identity_card_copy.lastIndexOf("/") + 1)}</p>
+                        <p>{identity_card_copy ? identity_card_copy.name : getFileName(userDocuments[0].identity_card_copy, "identity_card")}</p>
                     </div> 
+                    <button
+                      type='button'
+                      style={{ marginTop: '8px' }}
+                      onClick={() => deleteDocument('identity_card_copy')}
+                      disabled={deletingField === 'identity_card_copy'}
+                    >
+                      {deletingField === 'identity_card_copy' ? 'Deleting...' : 'Delete file'}
+                    </button>
                   </>
                 )}
           </div>
@@ -193,13 +262,18 @@ export default function UpdateSubmission() {
         (
           statement || form_075 || photo_3x4 || identity_card_copy ? (
               <div className='update-btn'>
-                <button onClick={()=>fetchData()}>Submit</button>
+                <button onClick={()=>submitUpdatedDocuments()}>Submit</button>
               </div>
           ):(
             ''
           )
         )
         }
+        {actionMessage && (
+          <p style={{ marginTop: '12px', color: actionMessage.includes('successfully') ? '#00A35D' : '#E94949' }}>
+            {actionMessage}
+          </p>
+        )}
       </div>
     </div>
   )

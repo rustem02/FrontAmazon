@@ -1,4 +1,59 @@
-name: Django CI/CD
+# name: React CI/CD
+
+# on:
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
+
+# jobs:
+
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout current branch ✅
+#         uses: actions/checkout@v2
+
+#       - name: Set up SSH key and whitelist EC2 IP address 🐻‍❄️
+#         run: |
+#           mkdir -p ~/.ssh
+#           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+#           chmod 600 ~/.ssh/id_rsa
+#           ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+#       - name: Create .env file dynamically 🧨
+#         env:
+#           ENV: ${{ secrets.ENV }}
+#           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+         
+#         run: |
+#           echo "ENV=${ENV}" >> env
+#           echo "EC2_USERNAME=${EC2_USERNAME}" >> env
+         
+
+#       - name: Copy files to remote server 🚙
+#         env:
+#           EC2_HOST: ${{ secrets.EC2_HOST }}
+#           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+#         run: |
+#           scp -r * $EC2_USERNAME@$EC2_HOST:/home/ubuntu/
+
+#       - name: Run Bash Script To Delpoy App 🚀
+#         env:
+#           EC2_HOST: ${{ secrets.EC2_HOST }}
+#           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+#         run: |
+#           ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "chmod +x ./deploy.sh && ./deploy.sh"
+
+#       - name: Clean up SSH key 🚀
+#         if: always()
+#         run: rm -f ~/.ssh/id_rsa
+
+
+
+
+
+name: React CI/CD
 
 on:
   push:
@@ -8,11 +63,28 @@ on:
 
 jobs:
 
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current branch ✅
         uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: docker.io/krasav4ik01/frontamazon:latest
 
       - name: Set up SSH key and whitelist EC2 IP address 🐻‍❄️
         run: |
@@ -21,31 +93,14 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Create .env file dynamically 🧨
-        env:
-          ENV: ${{ secrets.ENV }}
-          EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-         
-        run: |
-          echo "ENV=${ENV}" >> env
-          echo "EC2_USERNAME=${EC2_USERNAME}" >> env
-         
-
-      - name: Copy files to remote server 🚙
+      - name: Run Docker container on EC2
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
         run: |
-          scp -r * $EC2_USERNAME@$EC2_HOST:/home/ubuntu/
-
-      - name: Run Bash Script To Delpoy App 🚀
-        env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-        run: |
-          ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "chmod +x ./deploy.sh && ./deploy.sh"
+          ssh $EC2_USERNAME@$EC2_HOST "docker pull krasav4ik01/frontamazon:latest && docker stop myapp || true && docker rm myapp || true && docker run -d --name myapp -p 3000:3000 krasav4ik01/frontamazon:latest"
 
       - name: Clean up SSH key 🚀
         if: always()
         run: rm -f ~/.ssh/id_rsa
-        
+

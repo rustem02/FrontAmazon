@@ -1,0 +1,277 @@
+:root {
+  --bg: #f4f8ff;
+  --surface: #ffffff;
+  --primary: #1f3a8a;
+  --primary-dark: #152e74;
+  --accent: #f59e0b;
+  --muted: #5b6474;
+  --radius-xl: 24px;
+  --radius-lg: 16px;
+  --shadow-soft: 0 16px 40px rgba(16, 24, 40, 0.08);
+}
+
+body {
+  background: var(--bg);
+  color: #0f172a;
+}
+
+.main-page,
+.rooms,
+.news {
+  background: var(--bg);
+}
+
+.header,
+.dorm-information-header {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  padding: 48px;
+  margin-top: 24px;
+  margin-bottom: 48px;
+}
+
+.title-main {
+  width: 50%;
+}
+
+.title-main h1 {
+  color: #0f172a;
+  letter-spacing: -0.5px;
+}
+
+.title-main p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.dorm-img img,
+.social-header-img img,
+.docSubmissin-instructional-img img,
+.social-box-item img {
+  border: none;
+  object-fit: cover;
+}
+
+.main-points-container .vision,
+.main-points-container .mission,
+.main-points-container .goal,
+.data-dorm-item {
+  box-shadow: var(--shadow-soft);
+}
+
+.data-dorm-item {
+  background: var(--surface);
+  color: #0f172a;
+}
+
+.data-dorm-item h1 {
+  color: var(--primary);
+}
+
+.data-dorm-item p {
+  color: var(--muted);
+}
+
+.social-header-container {
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.social-item-content {
+  background: var(--surface);
+  border: 1px solid #e5e7eb;
+}
+
+.social-item-content h3 {
+  color: var(--primary-dark);
+}
+
+.social-item-content p {
+  color: var(--muted);
+}
+
+.social-item-content a {
+  display: none;
+}
+
+.nav-link-button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.news-container,
+.rooms-container {
+  padding-top: 130px;
+  padding-bottom: 80px;
+}
+
+.link-news-reading h1 {
+  background: linear-gradient(180deg, rgba(31, 58, 138, 0) 0%, rgba(31, 58, 138, 0.9) 90%);
+}
+
+.news-list-nav button {
+  background: #dbeafe;
+  color: var(--primary-dark);
+}
+
+.news-list-nav .active-list {
+  background: var(--primary);
+  color: #fff;
+}
+
+.list-item-content {
+  background: var(--surface);
+}
+
+.footer {
+  background: #0f1f4a;
+}
+
+.footer-content h5 {
+  color: #fbbf24;
+}
+
+.author-section {
+  width: 100%;
+  margin-bottom: 120px;
+}
+
+.author-section h2 {
+  text-align: center;
+  font-size: 34px;
+  color: var(--primary-dark);
+  margin-bottom: 42px;
+}
+
+.author-card {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  padding: 36px;
+  display: flex;
+  gap: 34px;
+  align-items: center;
+}
+
+.author-photo {
+  width: 190px;
+  height: 190px;
+  flex-shrink: 0;
+}
+
+.author-photo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+}
+
+.author-content h3 {
+  font-size: 30px;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.author-content h4 {
+  color: var(--primary);
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.author-content p {
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.author-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.author-tags span {
+  background: #e0e7ff;
+  color: #3730a3;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-family: "SF Pro Display medium";
+}
+
+.quick-actions-section {
+  margin-top: 12px;
+  margin-bottom: 42px;
+}
+
+.quick-actions-section h2 {
+  font-size: 34px;
+  margin-bottom: 8px;
+  color: var(--primary-dark);
+}
+
+.quick-actions-section > p {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.quick-action-card {
+  text-align: left;
+  border: 1px solid #dbe3f7;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+}
+
+.quick-action-card h3 {
+  color: var(--primary-dark);
+  margin-bottom: 6px;
+}
+
+.quick-action-card p {
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.quick-action-card:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 997px) {
+  .header,
+  .dorm-information-header {
+    padding: 28px;
+  }
+
+  .title-main {
+    width: 100%;
+  }
+
+  .author-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .author-tags {
+    justify-content: center;
+  }
+
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+}

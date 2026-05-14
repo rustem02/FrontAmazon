@@ -1,0 +1,279 @@
+.signing{
+    width: 42%;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.welcome{
+  width: 58%;
+  min-height: 100vh;
+  background-color: #EAFAFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.container{
+  width: 50%;
+  box-sizing: border-box;
+}
+
+.field-component{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  .field-component:last-child{
+    margin-bottom: 20px;
+  }
+  
+  .field-login #password{
+    margin-bottom: 10px;
+  }
+  
+  .errorLogin{
+    color:#E94949;
+  }
+  
+  .field-component label{
+    font-size: 12px;
+    color: #000;
+    opacity: .6;
+    margin-bottom: 8px;
+    text-wrap: nowrap;
+  }
+  
+  .field-component:first-child{
+    margin-bottom: 15px;
+  }
+  
+  .field-component input, #speciality-select, #faculty-select, #gender-select{
+    font-family: "SF Pro Display medium";
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    border-color: rgba(0, 0, 0, .3);
+  }
+
+.logo{
+  margin-bottom: 55px;
+  display: flex;
+  justify-content: center;
+}
+
+.logo img{
+  width: 100%;
+}
+
+.welcome-items{
+    width: 53%;
+    box-sizing: border-box;
+  }
+  
+  .welcome .img>img{
+    width: 100%;
+  }
+  
+  .img{
+    margin-bottom: 10px; 
+  }
+
+.welcome-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+  }
+  
+  .welcome-title{
+    font-family: "SF Pro Display";
+    font-size: 32px;
+    color: #2B2B67;
+    margin-bottom: 14px;
+    text-align: center;
+    text-wrap: nowrap;
+  }
+  
+  .welcome-desc{
+    display: flex;
+    width: 90%;
+    text-align: center;
+    font-size: 14px;
+    font-family: "SF Pro Display medium";
+    font-weight: 500;
+    letter-spacing: -2%;
+    color: #2B2B67BF;
+  }
+
+  .title-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #212153;
+    margin-bottom: 20px;
+  }
+  
+  .title-content h2{
+    font-size: 34px;
+    margin-bottom: 12px;
+  }
+  
+  @font-face {
+  font-family: "SF Pro Display medium";
+  src: url("../fonts/SF-Pro-Display-Medium.otf");
+  }
+  .title-content p{
+    font-family: "SF Pro Display medium";
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .additional{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+  
+  .additional input{
+    margin: 0;
+    width: 25px;
+    height: 25px;
+  }
+  
+  .error-register{
+    color: #E94949;
+  }
+  
+  .remember-chkbx{
+    display: flex;
+    align-items: center;
+  }
+  
+  .remember-chkbx label, .forgot a{
+    font-family: "SF Pro Display medium";
+    font-size: 16px;
+    color: #21215399;
+  }
+  
+  .forgot{
+    display: flex;
+    align-items: center;
+  }
+  
+  .forgot a{
+    text-decoration: none;
+  }
+
+  #remember{
+    margin-right: 10px;
+  }
+
+  .btn{
+    width: 100%;
+    background-color: #2B2B67;
+    color: #fff;
+    border-radius: 8px;
+    border-color: transparent;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 20px;
+    font-family: "SF Pro Display";
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+
+@media (max-width:1270px){
+    .welcome-title{
+        font-size: 28px;
+    }
+    .title-content p{
+        font-size: 16px;
+    }
+    .welcome-items{
+        width: 65%;
+    }
+    .container{
+        width: 60%;
+    }
+    .remember-chkbx label, .forgot a{
+        font-size: 15px;
+    }
+    .logo img{
+        width: 85%;
+    }
+    #remember{
+        margin-right: 5px;
+    }
+    .container h4{
+        font-size: 14px;
+        text-wrap: nowrap;
+    }
+}
+/* Medium devices (tablets, 768px and up) */
+@media (max-width:997px){
+    .welcome{
+        width: 50%;
+    }
+    .signing{
+        width: 50%;
+    }
+    .welcome-title {
+        font-size: 22px;
+        text-wrap: wrap;
+    }
+    .welcome-desc{
+        font-size: 12px;
+    }
+    .welcome-content{
+        width: fit-content;
+    }
+    .logo{
+        margin-bottom: 30px;
+    }
+    .logo img{
+        width: 80%;
+    }
+    .title-content h2{
+        font-size: 26px;
+    }
+    .title-content p{
+        font-size: 14px;
+    }
+    .field-component input{
+        padding: 9px;
+        font-size: 13px;
+    }
+    .remember-chkbx label, .forgot a {
+        font-size: 13px;
+    }
+    #remember{
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 768px) { 
+    .welcome{
+      display: none;
+    }
+    .signing{
+      width: 100%;
+    }
+    .container{
+      width: 60%;
+    }
+    .btn{
+      font-size: 16px;
+    }
+    .logo{
+      margin-bottom: 70px;
+    }
+}

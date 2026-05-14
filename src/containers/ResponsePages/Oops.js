@@ -29,23 +29,23 @@ export default function Oops() {
         }
       }
       fetchData();
-    },[]);
+    }, [authTokens]);
 
   return (
     <div className='oops'>
         <Navbar/>
         <div className='oops-container'>
             <div className='oops-img'>
-            <img src={require('../../img/oops.png')} alt="oops"/>
+                <img src={require('../../img/oops.png')} alt="oops"/>
             </div>
             <div className='oops-content'>
                 <h1 className='oops-title'>Oops! You did wrong!</h1>
                 <p className='oops-message'>Sorry, you were wrong! To get access to the booking service, {oopsMessage}</p>
             </div>
             {!userProfile.is_doc_submitted ? (
-                <a className='oops-link' to = '/document-submission' onClick={()=>navigate('/document-submission')}>Go to Document Submission page</a>
+                <button className='oops-link' onClick={()=>navigate('/document-submission')}>Go to Document Submission page</button>
             ):(
-                <a className='oops-link' onClick={()=>navigate('/main-page')}>Go to Main Page</a>
+                <button className='oops-link' onClick={()=>navigate('/main-page')}>Go to Main Page</button>
             )}
         </div> 
     </div>

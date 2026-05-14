@@ -1,5 +1,10 @@
 .nav{
     background-color: #212153;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
 }
 
 .navbar-content{
@@ -12,6 +17,11 @@
 .wrapper{
     width: 80%;
     margin: 0 auto;
+}
+
+/* Small extra spacing below fixed navbar on main page */
+.main-page .wrapper:first-of-type {
+    padding-top: 20px;
 }
 
 @font-face {
@@ -30,7 +40,14 @@
     margin-left: 40px;
 }
 
-.navbar-items li a{
+.menu-item>a{
+    text-decoration: none;
+    color: #000;
+    font-weight: 400;
+}
+
+
+.navbar-items>li:not(:last-child) a{
     text-decoration: none;
     color: #FFFFFF99;
     transition: .2s;
@@ -66,11 +83,8 @@
 header{
     display: flex;
     justify-content: space-between;
-    padding: 96px 0;
-}
-
-.header{
-    padding-top: 41px;
+    padding-top: 195px;
+    margin-bottom: 95px;
 }
 
 .title-main{
@@ -122,7 +136,7 @@ header{
 
 .btn-submission{
     font-family: "SF Pro Display medium";
-    font-size: 14px;
+    font-size: 13px;
     color: #212153;
     padding: 16px 20px;
     border:1px solid #212153;
@@ -130,4 +144,452 @@ header{
     border-radius: 8px;
     margin-right: 24px;
     cursor: pointer;
+}
+
+/* Main Points */
+.main-points{
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 190px;
+}
+
+.main-points h2{
+    font-family: 'SF Pro Display';
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 40.57px;
+    text-align: center;
+    margin-bottom: 45px;
+    color: #173F8F;
+}
+
+.main-points-container{
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.vision, .mission, .goal{
+    padding: 64px 20px 59px;
+    background-color: #EEEEEE;
+    width: calc(30% - 20px);
+    border-radius: 16px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.vision h3, .mission h3, .goal h3{
+    font-size: 19px;
+    line-height: 28.64px;
+    text-align: left;
+    color: #212153;
+    margin-bottom: 10px;
+}
+
+.vision p, .mission p, .goal p{
+    font-family: 'SF Pro Display medium';
+    font-size: 14px;
+    line-height: 19.09px;
+    letter-spacing: -0.01em;
+    text-align: left;
+    color: #21215380;
+}
+
+.vision-circle, .mission-circle, .goal-circle{
+    position: absolute;
+    border-radius: 100%;
+    width: 64px;
+    height: 64px;
+    background-color: #F3A367;
+    top: -25px;
+    left: 20px;
+}
+
+.mission-circle{
+    background-color: #E94949;
+}
+
+.goal-circle{
+    background-color: #673F8F;
+}
+
+/* Instructional videos */
+.instructional-videos{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.instructional-videos>h2{
+    font-size: 25px;
+    line-height: 40.57px;
+    text-align: center;
+    color: #173F8F;
+    margin-bottom: 50px;
+}
+
+.docSubmissin-instructional-content{
+    padding-top: 67px;
+    padding-bottom: 67px;
+    width: 55%;
+}
+
+.docSubmissin-instructional-content h2{
+    font-family: 'SF Pro Display';
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 40.57px;
+    text-align: left;
+    color: #212153;
+    margin-bottom: 25px;
+}
+.docSubmissin-instructional-content p{
+    font-family: 'SF Pro Display medium';
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.09px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    color: #212153B2;
+    margin-bottom: 24px;
+}
+
+.docSubmissin-instructional-content a,
+.docSubmissin-instructional-content button{
+    text-decoration: none;
+    color: #fff;
+    background-color: #212153;
+    padding: 16px 15px;
+    font-family: 'SF Pro Display medium';
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19.09px;
+    letter-spacing: -0.02em;
+    text-align: center;
+    display: flex;
+    width: fit-content;
+    border-radius: 8px;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.docSubmissin-instructional-content div{
+    width: 65%;
+}
+
+.docSubmissin-instructional-img{
+    width: 45%;
+}
+
+.docSubmissin-instructional-img img{
+    width: 100%;
+    
+    border: 2px solid #000000;
+    border-radius: 24px;
+}
+
+.instruction-videos-item{
+    display: flex;
+    justify-content: space-between;
+}
+
+.content-right{
+    float: right;
+}
+
+.instructional-img-left{
+    width: 45%;
+}
+
+.docSubmissin-instructional-content-right{
+    width: 55%;
+}
+
+.docSubmissin-instructional{
+    margin-bottom: 90px;
+}
+
+/* Footer */
+
+.footer{
+    padding: 96px 10%;
+    background-color: #212153;
+}
+
+.footer-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #FFFFFF66;
+}
+
+.footer-icons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-icons img{
+    width: 32px;
+    height: 32px;
+}
+
+.footer-logo, .footer-team-name, .footer-icons{
+    width: 12%;
+}
+
+.footer-logo img{
+    width: 100%;
+}
+
+.footer-team-name p{
+    font-family: 'SF Pro Display medium';
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19.09px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    color: #fff;
+}
+
+.footer-content{
+    font-family: 'SF Pro Display medium';
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19.09px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    display: flex;
+    justify-content: left;
+    gap: 100px;
+}
+
+.footer-item{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.footer-item:not(h5){
+    color: #FFFFFF80;
+}
+
+.footer-content h5{
+    color: #F3A367;
+}
+
+.cancel-burger-btn{
+    padding: 5px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #FFFFFF99;
+    display: none;
+  }
+  
+  .burger-btn{
+    padding: 5px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #FFFFFF99;
+    transition: .3s;
+    display: none;
+  }
+  
+  .burger-btn:hover{
+    color: #fff;
+  }
+  
+  .burger-icon{
+    font-size: 1.3rem; 
+  }  
+
+
+/* Large devices (desktops, 992px and up) */
+@media (max-width:1270px){
+    .title-main{
+        width: 35%;
+    }
+    .dorm-img{
+        width: 450px;
+    }
+    .navbar-items li{
+        margin-left: 25px;
+    }
+    .logo-nav{
+        width: 150px;
+    }
+
+    .title-main h1{
+        font-size: 40px;
+    }
+
+    .btn-book{
+        text-wrap: nowrap;
+        padding: 16px 30px;
+        box-sizing:border-box;
+        margin-right: 0;
+    }
+    .btn-submission{
+        text-wrap: nowrap;
+        padding: 16px 15px;
+        box-sizing:border-box;
+        margin-right: 0;
+    }
+    .footer-icons img{
+        width: 24px;
+        height: 24px;
+    }
+    .footer-logo{
+        width: 15%;
+    }
+
+    .footer-team-name p{
+        text-wrap: nowrap;
+    }
+    .nav-btn svg{
+        margin-right: 25px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width:997px){
+    .header{
+        padding-top: 140px;
+        flex-direction: column-reverse;
+    }
+    .title-main {
+        width: 100%;
+        margin-top: 40px;
+    }
+    .dorm-img{
+        width: 100%;
+        height: auto;
+    }
+    .dorm-img img{
+        object-fit: cover;
+        width: 100%;
+    }
+    .navbar-items{
+        display: none;
+    }
+    .burger-btn{
+        display: block;
+    }
+    .navbar{
+        width: 15%;
+    }
+    .navbar-icons{
+        width: 100%;
+    }
+    .nav-icons{
+        display: flex;
+    }
+    .main-points-container{
+        display: flex;
+        flex-direction: column;
+        gap: 45px;
+    }
+    .vision, .mission, .goal {
+        width: 100%;
+    }
+    .vision h3, .mission h3, .goal h3 {
+        font-size: 25px;
+    }
+    .vision p, .mission p, .goal p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width:768px){
+    .footer-content{
+        flex-direction: column;
+    }
+    .docSubmissin-instructional{
+        flex-direction: column-reverse;
+    }
+    .docSubmissin-instructional-img{
+        width: 100%;
+    }
+    .docSubmissin-instructional-content {
+        width: 100%;
+        text-align: center;
+        padding-bottom: 0;
+    }
+    .docSubmissin-instructional-content div{
+        width: 100%;
+    }
+    .instruction-videos-item:last-child{
+        flex-direction: column;
+    }
+    .navbar{
+        width: 22%;
+    }
+    .nav-btn svg{
+        margin-right: 15px;
+    }
+    .title-main h1 {
+        font-size: 32px;
+    }
+    .title-main p{
+        font-size: 15px;
+    }
+    .logo-nav {
+        width: 130px;
+    }
+    .footer-content {
+        gap: 65px;
+    }
+    .footer-icons img {
+        width: 20px;
+        height: 20px;
+    }
+    .footer-logo {
+        width: 25%;
+    }
+    .footer-team-name{
+        width: 33%;
+    }
+    .footer-team-name p {
+        font-size: 13px;
+    }
+    .footer-icons{
+        width: 23%;
+    }
+}
+
+@media (max-width: 576px) { 
+    .navbar{
+        width: 33%;
+    }
+    .vision h3, .mission h3, .goal h3 {
+        font-size: 22px;
+    }
+    .vision p, .mission p, .goal p {
+        font-size: 15px;
+    }
+    .vision-circle, .mission-circle, .goal-circle {
+        width: 58px;
+        height: 58px;
+    }
+    .main-points h2 {
+        font-size:27px;
+    }
+    .docSubmissin-instructional-content h2 {
+        font-size: 25px;
+    }
+    .docSubmissin-instructional-content p {
+        font-size: 15px;
+    }
+    .docSubmissin-instructional-content a {
+        padding: 13px 12px;
+    }
+    .nav-btn svg {
+        margin-right: 20px;
+    }
 }

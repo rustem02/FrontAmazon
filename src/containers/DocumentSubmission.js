@@ -13,7 +13,6 @@ export default function DocumentSubmission() {
   const [photo_3x4, setPhoto] = useState('')
   const [form_075, setForm] = useState('')
   const [identity_card_copy, setCardCopy] = useState('')
-  const [redirect, setRedirect] = useState(false)
   const navigate = useNavigate('')
     
     const submit = async(e) =>{
@@ -69,7 +68,7 @@ export default function DocumentSubmission() {
                 <div className='submission-material'>
                     <div>
                         <h2>Upload</h2>
-                        <form onSubmit={submit}>
+                        <form className='upload-form' onSubmit={submit}>
                             <div className='submission-item'>
                                 <label>Upload your 3x4 photo here</label>
                                 <div className='custom-file-input'>
@@ -80,7 +79,7 @@ export default function DocumentSubmission() {
                                     placeholder='Upload File'
                                     />
                                     <img src={require('../img/round-upload.png')} alt="logo"/>
-                                    <p>{photo_3x4? photo_3x4.name : "Upload File"}</p>
+                                    <p>{photo_3x4? photo_3x4.name : "Upload File"}</p>  
                                 </div>
                             </div>
                             <div className='submission-item'>

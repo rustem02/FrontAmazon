@@ -15,8 +15,7 @@ export default function DocSumbitted() {
                 <h1 className='oops-title doc-submitted-title'>Congratulations!</h1>
                 <p className='oops-message doc-submitted-message'>Your documents have been successfully submitted for Dorm Validation! We will let you notified if your documents are correct or not.</p>
             </div>
-            <a className='oops-link doc-submitted-link' onClick={()=>navigate('/main-page')}>Go to Main Page</a>
-           
+            <button className='oops-link doc-submitted-link' onClick={()=>navigate('/main-page')}>Go to Main Page</button>
         </div> 
     </div>
   )

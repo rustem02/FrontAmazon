@@ -1,0 +1,219 @@
+.news-container{
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 140px;
+    padding-bottom: 140px;
+}
+
+.latest-news{
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 95px;
+}
+
+.latest-news h2{
+    color: #173F8F;
+    font-size: 30px;
+    line-height: 40.57px;
+    text-align: center;
+    margin-bottom: 26px;
+}
+
+.link-news-reading{
+    position: relative;
+    text-decoration: none;
+    width: 100%;
+    display: flex;
+    height: 768px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+.link-news-reading img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 25px;
+    position: absolute;
+    z-index: -1;
+}
+
+.link-news-reading h1{
+    border-radius: 25px;
+    width: 100%;
+    font-size: 40px;
+    line-height: 57.28px;
+    text-align: left;
+    color: #fff;
+    padding: 120px 307px 98px 68px;
+    box-sizing: border-box;
+    align-self: flex-end;
+    background: linear-gradient(180deg, rgba(33, 33, 83, 0) 0%, #212153 81.11%);
+}
+
+.news-list{
+    display: flex;
+    flex-direction: column;
+    /* margin-bottom: 160px; */
+}
+
+.news-list-box{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    grid-auto-rows: auto; 
+}
+
+.news-list-item{
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Высота элемента сетки */
+}
+
+.list-item-img{
+    flex: 0 0 40%;
+    overflow: hidden;
+}
+
+.list-item-content{
+    flex: 1 0 auto; 
+    padding: 16px;
+    background-color: #CFCFCF;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: -10px;
+    z-index: 5;
+}
+
+
+.news-list-item img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+    z-index: -5;
+}
+
+.list-item-content p{
+    color: #fff;
+    padding: 4px 8px;
+    background-color: #173F8F;
+    border-radius: 40px;
+    align-self: flex-start;
+    font-size: 12px;
+    line-height: 14.32px;
+}
+
+.list-item-content h3{
+    color: #212153;
+    font-size: 17px;
+    line-height: 28.64px;
+}
+
+.list-item-content a,
+.list-item-content button{
+    text-decoration: none;
+    color: #212153;
+    border-bottom:2px solid #212153;
+    align-self: flex-start;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background: transparent;
+    cursor: pointer;
+    /* margin-top: auto; */
+}
+
+.news-list-nav{
+    margin-bottom: 40px;
+    display: flex;
+    gap: 8px;
+}
+
+.news-list-nav button{
+    border: none;
+    border-radius:40px;
+    padding: 10px 14px;
+    color: #fff;
+    background-color: #F3A367;
+    cursor: pointer;
+}
+
+.news-list-nav .active-list{
+    background-color: #173F8F;
+    transition: .2s;
+}
+
+@media (max-width:1270px){
+    .link-news-reading h1 {
+        font-size: 34px;
+        padding-right: 230px;
+    }
+}
+
+@media (max-width:997px){
+    .latest-news{
+        margin-bottom: 70px;
+    }
+    .news-list-box{
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .link-news-reading h1 {
+        font-size: 32px;
+        padding-right: 140px;
+        padding-left: 50px;
+    }
+    .link-news-reading{
+        height: 700px;
+    }
+}
+
+@media (max-width:768px){
+    .latest-news{
+        margin-bottom: 55px;
+    }
+    .link-news-reading{
+        height: 580px;
+    }
+    .news-container {
+        padding-bottom: 100px;
+    }
+    .news-list-box{
+        grid-template-columns: repeat(2, 1fr);
+    } 
+    .link-news-reading h1 {
+        font-size: 28px;
+        padding-right: 60px;
+        padding-left: 38px;
+        padding-bottom: 85px;
+    }
+}
+
+@media (max-width: 576px) { 
+    .latest-news{
+        margin-bottom: 45px;
+    }
+    .link-news-reading{
+        height: 450px;
+    }
+    .news-list-box {
+        grid-template-columns: repeat(1, 1fr); /* 1 колонка на маленьких экранах */
+    }
+    .news-container{
+        padding-bottom: 85px;
+    }
+    .link-news-reading h1 {
+        font-size: 24px;
+        padding-left: 30px;
+        padding-bottom: 65px;
+        padding-right: 45px;
+        line-height: 43px;
+    }   
+}

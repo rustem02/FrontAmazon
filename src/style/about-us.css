@@ -1,0 +1,275 @@
+.main-tasks{
+    width: 100%;
+    margin-bottom: 110px;
+}
+.main-task-item{
+    width: calc(25% - 30px);
+}
+.main-tasks h2 {
+    margin-bottom: 90px;
+}
+
+.dorm-contact-container{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 130px;
+}
+
+.male-dorm-contact, .female-dorm-contact{
+    width: calc(50% - 10px);
+}
+
+.main-tasks h2{
+    font-size: 34px;
+}
+
+.main-task-circle{
+    position: absolute;
+    border-radius: 100%;
+    width: 64px;
+    height: 64px;
+    background-color: #F3A367;
+    top: -25px;
+    left: 20px;
+    background-color: #00A35D;
+}
+
+.contact-dormitory>h2{
+    color: #173F8F;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 40.57px;
+    text-align: center;
+    margin-bottom: 90px;
+}
+
+.male-dorm-contact, .female-dorm-contact{
+    background-color: #212153;
+    border-radius:25px;
+}
+
+.male-dorm-contact>h3, .female-dorm-contact>h3{
+    color: #fff;
+    font-size: 22px;
+    line-height: 28.64px;
+    padding-top: 35px;
+    padding-bottom: 35px;
+    text-align: center;
+    border-bottom:5px solid #fff;
+}
+
+.male-dorm-info, .female-dorm-info{
+    padding: 50px 116px 70px 116px;
+}
+
+.male-info-item, .female-info-item{
+    margin-bottom: 35px;
+}
+
+.male-info-item>h3, .female-info-item>h3{
+    font-size: 19px;    
+    line-height: 28.64px;
+    text-align: left;
+    color: #F3A367;
+    width: fit-content;
+    margin-bottom: 12px;
+}
+
+.male-info-item>h3:after, .female-info-item>h3:after {
+    content: '';
+    display: block;
+    height: 2px; /* Высота линии */
+    background: #F3A367; /* Цвет линии */
+    width: auto; /* Ширина линии до наведения */
+}
+
+.male-info-item>h4, .female-info-item>h4{
+    font-size: 17px;
+    line-height: 21.48px;
+    text-align: left;
+    color: #fff;
+    opacity: 85%;
+    margin-bottom: 15px;
+}
+
+.dorm-contact-info{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #fff;
+    font-family: 'SF Pro Display medium';
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.09px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.team-roles{
+    margin-bottom: 200px;
+}
+
+.swiper-wrapper{
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
+
+.swiper-pagination{
+    bottom: -20px;
+}
+
+.team-member{
+    position: relative;
+    background-color:#fff;
+    border-radius:16px;
+    height: 480px;
+}
+
+.img-container {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.img-container img{
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 3px 23px 34px 0px #00000033;
+}
+
+.main-info-member{
+    padding: 120px 30px 30px 30px;
+    text-align: center;
+}
+
+.main-info-member h4{
+    color: #212153;
+    font-size: 18px;
+    line-height: 21.48px;
+    margin-bottom: 10px;
+}
+
+.main-info-member h5{
+    font-size: 16px;
+    line-height: 16.71px;
+    opacity: 50%;
+    margin-bottom: 16px;
+}
+
+.main-info-member p{
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 600;
+    line-height: 19.09px;
+    letter-spacing: -0.02em;
+    opacity: 50%;
+}
+
+.team-roles h1{
+    color: #173F8F;
+    font-size: 34px;
+    line-height: 40.57px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.aboutUs-nav{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+@media (max-width:1270px){
+    .team-member{
+        height: 440px;
+    }
+    .team-roles{
+        margin-bottom: 160px;
+    }
+    .male-dorm-info, .female-dorm-info {
+        padding-left: 63px;
+        padding-right: 63px;
+    }
+}
+
+@media (max-width:997px){
+    .main-tasks h2, .contact-dormitory>h2{
+        font-size: 32px;
+    }
+    .dorm-contact-container{
+        flex-direction: column;
+        gap: 50px;
+    }
+    .male-dorm-contact, .female-dorm-contact {
+        width: 90%;
+        margin: 0 auto;
+    }
+    .male-dorm-info, .female-dorm-info{
+        text-align: center;
+    }
+    .main-task-item{
+        width: 100%;
+    }
+    .team-member{
+        height: 400px;
+    }
+    .img-container{
+        width: 130px;
+        height: 130px;
+    }
+    .team-roles{
+        margin-bottom: 140px;
+    }
+}
+
+@media (max-width:768px){
+    .team-roles{
+        margin-bottom: 100px;
+    }
+    .team-member{
+        height: auto;
+    }
+    .main-tasks h2, .contact-dormitory>h2 {
+        font-size: 30px;
+    }
+}
+
+@media (max-width:576px){
+    .main-tasks h2, .contact-dormitory>h2 {
+        font-size: 28px;
+    }
+    .male-info-item>h3:after, .female-info-item>h3:after {
+        display: none;
+    }
+    .male-dorm-info, .female-dorm-info {
+        padding-left: 45px;
+        padding-right: 45px;
+        padding-bottom: 50px;
+    }
+    .male-dorm-contact, .female-dorm-contact {
+        width: 100%;
+    }
+    .dorm-contact-info {
+        gap: 8px;
+    }
+    .dorm-contact-info svg{
+        width: 16px;
+        height: 16px;
+    }
+    .male-dorm-info, .female-dorm-info {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    .aboutUs-nav button{
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    .dorm-contact-container {
+        margin-bottom: 110px;
+    }
+}
