@@ -1,69 +1,76 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import axios from 'axios'
 import AuthContext from '../context/AuthContext';
 
 export default function MyBookings() {
     const {authTokens} =useContext(AuthContext)
-    const [userBooking, setUserBooking] = useState('')
+    const [userBooking, setUserBooking] = useState(null)
+    const [bookingId, setBookingId] = useState(null)
     const [corridorNum, setCorridorNum] = useState('')
     const [bookingStatus, setBookingStatus] = useState('Active booking')
     const [paymentStatus, setPaymentStatus] = useState('Pending')
-    const room = userBooking.room_number
-    const floor= Math.round(room/100)
+    const [actionMessage, setActionMessage] = useState('')
+    const [isCancelling, setIsCancelling] = useState(false)
+    const [isDownloading, setIsDownloading] = useState(false)
+    const room = userBooking?.room_number
+    const floor = room ? Math.round(room / 100) : '-'
+    const hasActiveBooking = Boolean(userBooking)
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Выполняем GET запрос
-                const getResponse = await axios.get('get-bookings/', {
-                    headers: {
-                        'Authorization': `Bearer ${authTokens.access}`,
-                    }
-                });
-
-                const res = getResponse.data
-                if (res.length > 0) {
-                    setUserBooking(res[0].seat_detail)
-                    setBookingStatus('Confirmed')
-                } else {
-                    setBookingStatus('No active booking')
+    const loadBookings = useCallback(async () => {
+        try {
+            const getResponse = await axios.get('get-bookings/', {
+                headers: {
+                    'Authorization': `Bearer ${authTokens.access}`,
                 }
-                console.log("Пользователь забронировал: ", res);
-            } catch (error) {
-                // Обработка ошибок
-                console.error('Error fetching data:', error);
-            }
-        };
+            });
 
-        fetchData(); // Вызов функции для выполнения запроса при загрузке компонента
+            const res = getResponse.data
+            if (res.length > 0) {
+                setUserBooking(res[0].seat_detail)
+                setBookingId(res[0].id)
+                setBookingStatus('Confirmed')
+            } else {
+                setUserBooking(null)
+                setBookingId(null)
+                setBookingStatus('No active booking')
+            }
+        } catch (error) {
+            console.error('Error fetching bookings:', error);
+        }
+    }, [authTokens]);
+
+    const loadPaymentReceipt = useCallback(async () => {
+        try {
+            const response = await axios.get('payment/receipt/', {
+                headers: {
+                    'Authorization': `Bearer ${authTokens.access}`,
+                }
+            });
+            const receiptStatus = response?.data?.receipt?.status;
+            if (receiptStatus) {
+                setPaymentStatus(receiptStatus);
+                return;
+            }
+        } catch (error) {
+            console.log('Payment receipt is not available yet');
+        }
+
+        const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+        if (userProfile?.is_dorm) {
+            setPaymentStatus('Paid');
+        } else {
+            setPaymentStatus('Pending');
+        }
     }, [authTokens]);
 
     useEffect(() => {
-        const fetchPaymentReceipt = async () => {
-            try {
-                const response = await axios.get('payment/receipt/', {
-                    headers: {
-                        'Authorization': `Bearer ${authTokens.access}`,
-                    }
-                });
-                const receiptStatus = response?.data?.receipt?.status;
-                if (receiptStatus) {
-                    setPaymentStatus(receiptStatus);
-                    return;
-                }
-            } catch (error) {
-                console.log('Payment receipt is not available yet');
-            }
+        loadBookings();
+    }, [loadBookings]);
 
-            const userProfile = JSON.parse(localStorage.getItem('userProfile'));
-            if (userProfile?.is_dorm) {
-                setPaymentStatus('Paid');
-            }
-        };
-
-        fetchPaymentReceipt();
-    }, [authTokens]);
+    useEffect(() => {
+        loadPaymentReceipt();
+    }, [loadPaymentReceipt]);
 
     useEffect(() => {
         if (!room) {
@@ -89,7 +96,65 @@ export default function MyBookings() {
         recognizeCorridorNum(room);
     }, [room]); 
 
-    console.log(userBooking);
+    const cancelBooking = async () => {
+        if (!hasActiveBooking || isCancelling) {
+            return;
+        }
+
+        setActionMessage('');
+        setIsCancelling(true);
+        try {
+            await axios.post(
+                'cancel-booking/',
+                {},
+                {
+                    headers: {
+                        'Authorization': `Bearer ${authTokens.access}`,
+                    },
+                }
+            );
+            setActionMessage('Booking cancelled successfully.');
+            setPaymentStatus('Pending');
+            localStorage.removeItem('currentBookingId');
+            localStorage.removeItem('currentBookingAmount');
+            await loadBookings();
+        } catch (error) {
+            setActionMessage(error?.response?.data?.error || 'Failed to cancel booking.');
+        } finally {
+            setIsCancelling(false);
+        }
+    };
+
+    const downloadReceipt = async () => {
+        if (isDownloading) {
+            return;
+        }
+
+        setActionMessage('');
+        setIsDownloading(true);
+        try {
+            const response = await axios.get('payment/download-receipt/', {
+                headers: {
+                    'Authorization': `Bearer ${authTokens.access}`,
+                },
+                responseType: 'blob',
+            });
+
+            const blobUrl = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.setAttribute('download', `receipt_${bookingId || 'dorm'}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(blobUrl);
+        } catch (error) {
+            setActionMessage('Receipt is not available yet.');
+        } finally {
+            setIsDownloading(false);
+        }
+    };
+
   return (
     <div className='my-booking'>
         <Navbar/>
@@ -110,11 +175,11 @@ export default function MyBookings() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td data-label="Block">{userBooking.block}-Block</td>
-                            <td data-label="Floor">{floor}-floor</td>
-                            <td data-label="Corridor">{corridorNum}-corridor</td>
-                            <td data-label="Room">{room}-room</td>
-                            <td data-label="Seat">{userBooking.seat_number}-seat</td>
+                            <td data-label="Block">{hasActiveBooking ? `${userBooking.block}-Block` : '-'}</td>
+                            <td data-label="Floor">{hasActiveBooking ? `${floor}-floor` : '-'}</td>
+                            <td data-label="Corridor">{hasActiveBooking ? `${corridorNum}-corridor` : '-'}</td>
+                            <td data-label="Room">{hasActiveBooking ? `${room}-room` : '-'}</td>
+                            <td data-label="Seat">{hasActiveBooking ? `${userBooking.seat_number}-seat` : '-'}</td>
                         </tr>
                     </tbody>
                     <tfoot>
@@ -124,6 +189,19 @@ export default function MyBookings() {
                     </tfoot>
                 </table>
             </div>
+            <div style={{ marginTop: '18px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                <button onClick={cancelBooking} disabled={!hasActiveBooking || isCancelling}>
+                    {isCancelling ? 'Cancelling...' : 'Cancel booking'}
+                </button>
+                <button onClick={downloadReceipt} disabled={isDownloading}>
+                    {isDownloading ? 'Downloading...' : 'Download receipt (PDF)'}
+                </button>
+            </div>
+            {actionMessage && (
+                <p style={{ marginTop: '10px', color: actionMessage.includes('successfully') ? '#00A35D' : '#E94949' }}>
+                    {actionMessage}
+                </p>
+            )}
         </div>
         <footer></footer>
     </div>

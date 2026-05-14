@@ -13,6 +13,7 @@ export default function PaymentBooking() {
     const [cvv, setCvv] = useState('');
     const [paymentError, setPaymentError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [provider, setProvider] = useState('manual');
 
     const { authTokens } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -22,7 +23,8 @@ export default function PaymentBooking() {
     const amount = useMemo(() => Number(localStorage.getItem('currentBookingAmount') || 195000), []);
 
     const submitPayment = async () =>{
-        if(!bookingId || !expiry || !cvv || !cardNumber){
+        const requiresCardFields = provider === 'manual';
+        if(!bookingId || (requiresCardFields && (!expiry || !cvv || !cardNumber))){
             setPaymentError(t('payment.fillAll'));
         }else{
             try{
@@ -30,7 +32,7 @@ export default function PaymentBooking() {
                 setPaymentError('')
                 const response = await axios.post('payment/', 
                 {
-                  amount, booking: bookingId, provider: 'manual'
+                  amount, booking: bookingId, provider
                 },
                 {
                     headers: {
@@ -40,11 +42,16 @@ export default function PaymentBooking() {
 
                 const res =  response.data;
                 console.log(res);
+                if (res?.checkout_url) {
+                    window.location.href = res.checkout_url;
+                    return;
+                }
                 localStorage.removeItem('bookingDraft');
-                navigate('/congrats-booking');
+                navigate('/payment-success');
             }catch(err){
                 console.error(err);
                 setPaymentError('Payment failed. Please check card details or try again.')
+                navigate('/payment-fail');
             } finally {
                 setIsSubmitting(false)
             }
@@ -101,6 +108,14 @@ export default function PaymentBooking() {
                             maxLength={19}
                             placeholder="4400 **** **** ****"
                         />
+                    </div>
+                    <div className="field-component">
+                        <label>Payment provider</label>
+                        <select value={provider} onChange={(event) => setProvider(event.target.value)}>
+                            <option value="manual">Manual (demo)</option>
+                            <option value="kaspi">Kaspi</option>
+                            <option value="stripe">Stripe</option>
+                        </select>
                     </div>
                     <div className='payment-cvv-mm'>
                         <div className="field-component">

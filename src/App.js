@@ -29,6 +29,10 @@ import AdminDashboard from "./containers/AdminPages/AdminDashboard";
 import CongratsPublished from "./containers/ResponsePages/CongratsPublished";
 import AboutUs from "./containers/AboutUs";
 import SupportChat from "./containers/SupportChat";
+import Notifications from "./containers/Notifications";
+import PaymentSuccess from "./containers/ResponsePages/PaymentSuccess";
+import PaymentFail from "./containers/ResponsePages/PaymentFail";
+import PaymentSimulator from "./containers/PaymentSimulator";
 
 const App = () => {
   return (
@@ -57,6 +61,10 @@ const App = () => {
                 <Route exact path="/congrats-published" element={<CongratsPublished/>}/>
                 <Route exact path="/about-us" element={<AboutUs/>}/>
                 <Route exact path="/support-chat" element={<PrivateRoute><SupportChat/></PrivateRoute>}/>
+                <Route exact path="/notifications" element={<PrivateRoute><Notifications/></PrivateRoute>}/>
+                <Route exact path="/payment-success" element={<PrivateRoute><PaymentSuccess/></PrivateRoute>}/>
+                <Route exact path="/payment-fail" element={<PrivateRoute><PaymentFail/></PrivateRoute>}/>
+                <Route exact path="/payment-simulator" element={<PrivateRoute><PaymentSimulator/></PrivateRoute>}/>
                 <Route
                   path="/main-page"
                   element={
@@ -66,6 +74,7 @@ const App = () => {
                   }
                 />
                 <Route exact path="/reset-password" element={<ResetPassword/>}/>
+                <Route exact path="/password-reset/:token" element={<ResetPassword/>}/>
             </Routes>
           </AuthProvider>
       </Router>

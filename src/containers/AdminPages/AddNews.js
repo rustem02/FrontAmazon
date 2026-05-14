@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react'
 import Navbar from '../../components/Navbar'
-import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import AuthContext from '../../context/AuthContext';
 
 export default function AddNews() {
@@ -11,7 +10,6 @@ export default function AddNews() {
     const [title, setSelectedCategory] = useState("");
     const [content, setTitle] = useState("");
     const [file, setFile] = useState('')
-    const [successfullyPublished, setSuccessfullyPublished] = useState('')
 
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.value);
@@ -38,9 +36,6 @@ export default function AddNews() {
     
           if(response.ok){
             navigate('/congrats-published');
-            setSuccessfullyPublished('You registered succesfully! Please check your email')
-          }else{
-            setSuccessfullyPublished('')
           }
          }catch(err){
             console.error("Ошибка: ", err);

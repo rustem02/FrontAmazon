@@ -253,7 +253,8 @@ header{
     margin-bottom: 24px;
 }
 
-.docSubmissin-instructional-content a{
+.docSubmissin-instructional-content a,
+.docSubmissin-instructional-content button{
     text-decoration: none;
     color: #fff;
     background-color: #212153;
@@ -268,7 +269,9 @@ header{
     width: fit-content;
     border-radius: 8px;
     align-items: center;
-    gap: 10px;    
+    gap: 10px;
+    border: none;
+    cursor: pointer;
 }
 
 .docSubmissin-instructional-content div{

@@ -41,7 +41,7 @@ export default function UserDocuments() {
             if(email){
                 fetchDocuments()
             }
-    },[email]);
+    },[email, authTokens]);
 
     const verifyUser = async () => {
         try {

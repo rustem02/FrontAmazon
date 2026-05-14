@@ -57,7 +57,7 @@ const Login = ()=> {
                          <label>{t('login.remember')}</label>
                         </div>
                         <div className="forgot">
-                          <a href="/"><Link to='/reset-password'>{t('login.forgotPassword')}</Link></a>
+                          <Link to='/reset-password'>{t('login.forgotPassword')}</Link>
                         </div>
                       </div>
                       <button className="btn">{t('login.signIn')}</button>

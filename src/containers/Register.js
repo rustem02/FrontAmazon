@@ -21,18 +21,25 @@ export default function Register() {
   const [specialty, setSelectedSpeciality] = useState("");
   const [university, setSelectedUniversity] = useState("");
   const [universities, setUniversities] = useState([]);
+  const [faculties, setFaculties] = useState([]);
+  const [specialitiesFromApi, setSpecialitiesFromApi] = useState([]);
 
   useEffect(() => {
-    const fetchUniversities = async () => {
+    const fetchInitialData = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/universities/');
-        const data = await response.json();
-        setUniversities(Array.isArray(data) ? data : []);
+        const [universitiesResponse, facultiesResponse, specialitiesResponse] = await Promise.all([
+          axios.get('universities/'),
+          axios.get('faculties/'),
+          axios.get('specialities/'),
+        ]);
+        setUniversities(Array.isArray(universitiesResponse.data) ? universitiesResponse.data : []);
+        setFaculties(Array.isArray(facultiesResponse.data) ? facultiesResponse.data : []);
+        setSpecialitiesFromApi(Array.isArray(specialitiesResponse.data) ? specialitiesResponse.data : []);
       } catch (error) {
-        console.error('Cannot fetch universities: ', error);
+        console.error('Cannot fetch register dictionaries: ', error);
       }
     };
-    fetchUniversities();
+    fetchInitialData();
   }, []);
 
   const specialities = [
@@ -195,7 +202,7 @@ export default function Register() {
       // console.log(response.response.data.email);
       console.log(response);
 
-      if(response.status == 201){
+      if(response.status === 201){
         setTimeout(()=> setRedirect(true),10000);
         setErrorRegister('')
         setSuccessfullyRegister('You registered succesfully! Please check your email')
@@ -227,11 +234,13 @@ export default function Register() {
 };
 
  const getSpecialityOptions = (faculty) =>{
-    // Фильтруем специальности по переданному факультету
-    const filteredSpecialities = specialities.filter(speciality => speciality.faculty == faculty);
+    const sourceSpecialities = specialitiesFromApi.length > 0 ? specialitiesFromApi : specialities;
+    const filteredSpecialities = sourceSpecialities.filter(
+      (specialityItem) => String(specialityItem.faculty) === String(faculty)
+    );
     
     // Получаем только имена специальностей
-    const specialityRes = filteredSpecialities.map(speciality => ({ id: speciality.id, name: speciality.name }));
+    const specialityRes = filteredSpecialities.map((specialityItem) => ({ id: specialityItem.id, name: specialityItem.name }));
 
     return specialityRes;
  }
@@ -303,11 +312,21 @@ console.log("Gender: " + gender);
                     </div>
                     <div className="field-component field-signup">
                       <select id="faculty-select" value={faculty} onChange={handleFacultyChange}>
-                          <option value="">Select the faculty</option> {/* Опция по умолчанию */}
-                          <option value="1">Faculty of Engineering and Natural sciences</option> {/* Значения для этажей */}
-                          <option value="5">Faculty of Education and Humanities</option>
-                          <option value="6">Business School</option>
-                          <option value="7">Faculty of Law and Social sciences</option>
+                          <option value="">Select the faculty</option>
+                          {faculties.length > 0 ? (
+                            faculties.map((facultyItem) => (
+                              <option key={facultyItem.id} value={facultyItem.id}>
+                                {facultyItem.name}
+                              </option>
+                            ))
+                          ) : (
+                            <>
+                              <option value="1">Faculty of Engineering and Natural sciences</option>
+                              <option value="5">Faculty of Education and Humanities</option>
+                              <option value="6">Business School</option>
+                              <option value="7">Faculty of Law and Social sciences</option>
+                            </>
+                          )}
                       </select>
                     </div>
                     <div className="field-component field-signup">

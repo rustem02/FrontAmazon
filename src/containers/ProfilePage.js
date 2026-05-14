@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import AuthContext from '../context/AuthContext';
-import { json, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import axios from 'axios';
 import Modal from 'react-modal';
 
 export default function ProfilePage() {
   const { authTokens } = useContext(AuthContext)
   const userProfile = JSON.parse(localStorage.getItem('userProfile'))
-  const oopsMessage = localStorage.getItem('messageDocSubm')
   const navigate = useNavigate();
 
   const [numTurn, setNumTurn] = useState(1);
@@ -30,6 +29,8 @@ export default function ProfilePage() {
   const [id_number, setStudentId] = useState('')
   const [email, setEmail] = useState('')
   const [faculty_name, setFaculty] = useState('')
+  const [docsActionMessage, setDocsActionMessage] = useState('')
+  const [deletingField, setDeletingField] = useState('')
 
   function setNumTurnClick(index){
      setNumTurn(index);
@@ -75,7 +76,7 @@ const handleFacultyChange= (event) => {
 
       console.log(response);
 
-      if(response.status == 200){
+      if(response.status === 200){
         setErrorRegister('')
         setSuccessfullyChanged('You changed password successfully! You will redirected to Login Page')
         setTimeout(()=> navigate('/'), 6000);
@@ -136,7 +137,7 @@ const fetchData = async () => {
   }
 
   try {
-      const response = await axios.patch('documents/update/', formData, {
+      await axios.patch('documents/update/', formData, {
           headers: {
               'Content-Type': 'multipart/form-data',
               'Authorization': `Bearer ${authTokens.access}`,
@@ -149,6 +150,27 @@ const fetchData = async () => {
       console.error('You have problems: ' + err);
   }
 };
+
+const deleteDocument = async (fileField) => {
+  if (deletingField) {
+    return;
+  }
+  try {
+    setDeletingField(fileField)
+    setDocsActionMessage('')
+    await axios.delete(`delete-document/${fileField}/`, {
+      headers: {
+        'Authorization': `Bearer ${authTokens.access}`,
+      },
+    });
+    setDocsActionMessage(`${fileField} deleted successfully.`)
+    window.location.reload()
+  } catch (err) {
+    setDocsActionMessage(`Failed to delete ${fileField}.`)
+  } finally {
+    setDeletingField('')
+  }
+}
 
   const userData = userDocuments.length > 0 ? userDocuments[0].user_data : '';
   console.log(userDocuments[0]);
@@ -275,12 +297,12 @@ const fetchData = async () => {
                 )}
                 {numTurn === 2 &&(
                   <>
-                    {userDocuments == '' ? (
+                    {userDocuments === '' ? (
                       <div className='oops-container oops-profile-container'>
                       <div className='oops-img'>
                           <img src={require('../img/oops.png')} alt="oops"/>
                       </div>
-                      {userProfile.is_doc_submitted == false &&(
+                      {userProfile.is_doc_submitted === false &&(
                           <div className='oops-content oops-profile-content'>
                             <h1 className='oops-title'>Oops! You did wrong!</h1>
                             <p className='oops-message'>Sorry, you were wrong! To get access to the booking service, you must first submit the documents to the Dorm administration!</p>
@@ -294,7 +316,7 @@ const fetchData = async () => {
                         <p className='status-txt'>Current Status of Document Submission: </p>
                         <div className='status'>
                           {userDocuments && userDocuments.length > 0 &&(
-                            userDocuments[0].is_verified == false ? (
+                            userDocuments[0].is_verified === false ? (
                               <div className='status-doc-submission' style= {{backgroundColor: '#F3A367' }}></div>
                             ):(
                               <div className='status-doc-submission' style= {{backgroundColor: '#00A35D' }}></div>
@@ -302,7 +324,7 @@ const fetchData = async () => {
                           )}
                           {userDocuments && userDocuments.length > 0 &&
                             (
-                              userDocuments[0].is_verified == false ? (
+                              userDocuments[0].is_verified === false ? (
                                 <p>Waiting verification of admin</p>
                               ):(
                                 <p>Verified by Admin</p>
@@ -330,6 +352,9 @@ const fetchData = async () => {
                                   <img src={require('../img/update.png')} alt="logo"/>
                                   <p>{statement ? statement.name : getFileName(userDocuments[0].statement, "statement")}</p>
                                 </div>
+                                <button type='button' onClick={() => deleteDocument('statement')} disabled={deletingField === 'statement'}>
+                                  {deletingField === 'statement' ? 'Deleting...' : 'Delete file'}
+                                </button>
                         </div>
                         <div className='submitted-item'>
                           <div>
@@ -350,6 +375,9 @@ const fetchData = async () => {
                             <img src={require('../img/update.png')} alt="logo"/>
                             <p>{photo_3x4 ? photo_3x4.name : getFileName(userDocuments[0].photo_3x4, "photo_3x4")}</p>
                           </div>
+                          <button type='button' onClick={() => deleteDocument('photo_3x4')} disabled={deletingField === 'photo_3x4'}>
+                            {deletingField === 'photo_3x4' ? 'Deleting...' : 'Delete file'}
+                          </button>
                         </div>
                         <div className='submitted-item'>
                           <div>
@@ -370,6 +398,9 @@ const fetchData = async () => {
                             <img src={require('../img/update.png')} alt="logo"/>
                             <p>{form_075 ? form_075.name : getFileName(userDocuments[0].form_075, "form_075")}</p>
                           </div>
+                          <button type='button' onClick={() => deleteDocument('form_075')} disabled={deletingField === 'form_075'}>
+                            {deletingField === 'form_075' ? 'Deleting...' : 'Delete file'}
+                          </button>
                         </div>
                         <div className='submitted-item'>
                           <div>
@@ -390,6 +421,9 @@ const fetchData = async () => {
                             <img src={require('../img/update.png')} alt="logo"/>
                             <p>{identity_card_copy ? identity_card_copy.name : getFileName(userDocuments[0].identity_card_copy, "identity_card")}</p>
                           </div> 
+                          <button type='button' onClick={() => deleteDocument('identity_card_copy')} disabled={deletingField === 'identity_card_copy'}>
+                            {deletingField === 'identity_card_copy' ? 'Deleting...' : 'Delete file'}
+                          </button>
                         </div>
                       </div>
                       {statement || photo_3x4 || identity_card_copy || form_075 ? (
@@ -397,6 +431,11 @@ const fetchData = async () => {
                               <button onClick={()=>fetchData()}>Submit</button>
                             </div>
                         ): null}
+                        {docsActionMessage && (
+                          <p style={{ marginTop: '12px', color: docsActionMessage.includes('successfully') ? '#00A35D' : '#E94949' }}>
+                            {docsActionMessage}
+                          </p>
+                        )}
                         </div>
                     )}
                   </>

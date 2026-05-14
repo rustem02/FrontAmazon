@@ -15,7 +15,7 @@ function CongratsBooking() {
                 <h1 className='oops-title doc-submitted-title'>Congratulations!</h1>
                 <p className='oops-message doc-submitted-message'>Congratulations, you made a successful booking! We look forward to seeing you in our hostel! Don't be late to settle down!</p>
             </div>
-            <a className='oops-link doc-submitted-link' onClick={()=>navigate('/my-booking')}>Go to My Bookings</a>
+            <button className='oops-link doc-submitted-link' onClick={()=>navigate('/my-booking')}>Go to My Bookings</button>
         </div> 
     </div>
   )

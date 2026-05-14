@@ -29,7 +29,7 @@ export default function Oops() {
         }
       }
       fetchData();
-    },[]);
+    }, [authTokens]);
 
   return (
     <div className='oops'>
@@ -43,9 +43,9 @@ export default function Oops() {
                 <p className='oops-message'>Sorry, you were wrong! To get access to the booking service, {oopsMessage}</p>
             </div>
             {!userProfile.is_doc_submitted ? (
-                <a className='oops-link' to = '/document-submission' onClick={()=>navigate('/document-submission')}>Go to Document Submission page</a>
+                <button className='oops-link' onClick={()=>navigate('/document-submission')}>Go to Document Submission page</button>
             ):(
-                <a className='oops-link' onClick={()=>navigate('/main-page')}>Go to Main Page</a>
+                <button className='oops-link' onClick={()=>navigate('/main-page')}>Go to Main Page</button>
             )}
         </div> 
     </div>

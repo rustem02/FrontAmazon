@@ -16,7 +16,7 @@ export default function CongratsPublished() {
                 <h1 className='oops-title doc-submitted-title'>Successfully Published! </h1>
                 <p className='oops-message doc-submitted-message'>Congratulations! Successfully Published your News</p>
             </div>
-            <a className='oops-link doc-submitted-link' onClick={()=>navigate('/news-admin')}>Go to News Page</a>
+            <button className='oops-link doc-submitted-link' onClick={()=>navigate('/news-admin')}>Go to News Page</button>
         </div> 
     </div>
   )

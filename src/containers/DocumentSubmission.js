@@ -13,7 +13,6 @@ export default function DocumentSubmission() {
   const [photo_3x4, setPhoto] = useState('')
   const [form_075, setForm] = useState('')
   const [identity_card_copy, setCardCopy] = useState('')
-  const [redirect, setRedirect] = useState(false)
   const navigate = useNavigate('')
     
     const submit = async(e) =>{

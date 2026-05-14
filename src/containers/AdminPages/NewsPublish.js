@@ -56,10 +56,10 @@ export default function NewsPublish() {
             </section>
             <section className='latest-news'>
                 <h2>Latest news</h2>
-                <a href='' className='link-news-reading'>
+                <button type='button' className='link-news-reading'>
                     <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=80" alt='latest-news-img'/>
                     <h1>Applications for the new semester are now open for partner universities.</h1>
-                </a>
+                </button>
             </section>
             <section className='news-list'>
                 <div className='news-list-nav'>
@@ -84,7 +84,7 @@ export default function NewsPublish() {
                                 <div className='list-item-content'>
                                     <p style={{ backgroundColor: newsItem.title === "AC Catering News" ? '#E94949' : '' }}>{newsItem.title}</p>
                                     <h3>{newsItem.content}</h3>
-                                    <a href='#'>Read now</a>
+                                    <button type='button'>Read now</button>
                                 </div>
                             </div>
                         ))}
@@ -103,7 +103,7 @@ export default function NewsPublish() {
                                 <div className='list-item-content'>
                                     <p style={{ backgroundColor: newsItem.title === "AC Catering News" ? '#E94949' : '' }}>{newsItem.title}</p>
                                     <h3>{newsItem.content}</h3>
-                                    <a href='#'>Read now</a>
+                                    <button type='button'>Read now</button>
                                 </div>
                             </div>
                         ))}
@@ -122,7 +122,7 @@ export default function NewsPublish() {
                                 <div className='list-item-content'>
                                     <p style={{ backgroundColor: newsItem.title === "AC Catering News" ? '#E94949' : '' }}>{newsItem.title}</p>
                                     <h3>{newsItem.content}</h3>
-                                    <a href='#'>Read now</a>
+                                    <button type='button'>Read now</button>
                                 </div>
                             </div>
                         ))}
